@@ -1,12 +1,11 @@
-package rs.ac.bg.fon.silab.dms.dataaccess.model;
+package rs.ac.bg.fon.silab.dms.core.model;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "company")
-public class Company {
-
+@Table(name = "document")
+public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
@@ -15,11 +14,8 @@ public class Company {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private List<Process> processes;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private List<User> employees;
+    @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<DocumentDescriptorAssociation> documentDescriptorAssociations;
 
     public Long getId() {
         return id;
@@ -37,20 +33,12 @@ public class Company {
         this.name = name;
     }
 
-    public List<Process> getProcesses() {
-        return processes;
+    public List<DocumentDescriptorAssociation> getDocumentDescriptorAssociations() {
+        return documentDescriptorAssociations;
     }
 
-    public void setProcesses(List<Process> processes) {
-        this.processes = processes;
-    }
-
-    public List<User> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<User> employees) {
-        this.employees = employees;
+    public void setDocumentDescriptorAssociations(List<DocumentDescriptorAssociation> documentDescriptorAssociations) {
+        this.documentDescriptorAssociations = documentDescriptorAssociations;
     }
 
     @Override
@@ -58,9 +46,9 @@ public class Company {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Company company = (Company) o;
+        Document document = (Document) o;
 
-        return id.equals(company.id);
+        return id.equals(document.id);
 
     }
 
@@ -71,11 +59,10 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company{" +
+        return "Document{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", processes=" + processes +
-                ", employees=" + employees +
+                ", documentDescriptorAssociations=" + documentDescriptorAssociations +
                 '}';
     }
 }

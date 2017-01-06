@@ -1,4 +1,4 @@
-package rs.ac.bg.fon.silab.dms.service;
+package rs.ac.bg.fon.silab.dms.core.service;
 
 import org.springframework.stereotype.Service;
 

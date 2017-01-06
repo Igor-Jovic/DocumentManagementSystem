@@ -1,8 +1,6 @@
-package rs.ac.bg.fon.silab.dms.controller;
+package rs.ac.bg.fon.silab.dms.rest;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,8 +12,7 @@ public class HomeController {
 
     @GET
     public Response hello() {
-        return Response
-                .ok("Server is up and running.")
+        return Response.ok("Server is up and running.")
                 .build();
     }
 }

@@ -1,4 +1,4 @@
-package rs.ac.bg.fon.silab.dms.dataaccess.model;
+package rs.ac.bg.fon.silab.dms.core.model;
 
 import javax.persistence.*;
 
@@ -11,7 +11,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME", unique = true)
     private String username;
 
     @Column(name = "PASSWORD")
@@ -21,9 +21,19 @@ public class User {
     @Column(name = "ROLE")
     private Role role;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "COMPANY_ID")
     private Company company;
+
+    public User() {
+    }
+
+    public User(String username, String password, Role role, Company company) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.company = company;
+    }
 
     public Long getId() {
         return id;

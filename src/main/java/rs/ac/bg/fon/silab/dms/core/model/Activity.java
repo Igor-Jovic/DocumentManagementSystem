@@ -1,4 +1,4 @@
-package rs.ac.bg.fon.silab.dms.dataaccess.model;
+package rs.ac.bg.fon.silab.dms.core.model;
 
 import javax.persistence.*;
 
