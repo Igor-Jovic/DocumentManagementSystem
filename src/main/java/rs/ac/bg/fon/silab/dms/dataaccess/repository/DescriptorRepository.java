@@ -1,8 +1,7 @@
-package rs.ac.bg.fon.silab.dms.repository;
+package rs.ac.bg.fon.silab.dms.dataaccess.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import rs.ac.bg.fon.silab.dms.model.Activity;
-import rs.ac.bg.fon.silab.dms.model.Descriptor;
+import rs.ac.bg.fon.silab.dms.dataaccess.model.Descriptor;
 
 public interface DescriptorRepository extends JpaRepository<Descriptor, Long> {
 }

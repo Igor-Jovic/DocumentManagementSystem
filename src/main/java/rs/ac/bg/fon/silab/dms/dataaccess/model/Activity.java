@@ -1,7 +1,6 @@
-package rs.ac.bg.fon.silab.dms.model;
+package rs.ac.bg.fon.silab.dms.dataaccess.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "activity")
