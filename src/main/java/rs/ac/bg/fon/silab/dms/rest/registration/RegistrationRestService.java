@@ -2,6 +2,7 @@ package rs.ac.bg.fon.silab.dms.rest.registration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.rest.registration.dto.RegistrationRequest;
 import rs.ac.bg.fon.silab.dms.rest.registration.dto.RegistrationResponse;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
@@ -20,6 +21,8 @@ public class RegistrationRestService {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CompanyService companyService;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -35,6 +38,8 @@ public class RegistrationRestService {
                     .entity("A problem occured. In order to register you need to provide company name, username and password.")
                     .build();
         }
+
+
         User user = null;
         try {
             user = userService.createUser(createUserFromRequest(registrationRequest));
@@ -48,8 +53,9 @@ public class RegistrationRestService {
         return Response.ok(registrationResponse).build();
     }
 
-    private User createUserFromRequest(RegistrationRequest registrationRequest) {
+    private User createUserFromRequest(RegistrationRequest registrationRequest) throws DMSException {
         Company company = new Company(registrationRequest.companyName);
+        company = companyService.createCompany(company);
         return new User(registrationRequest.username, registrationRequest.password, Role.ADMIN, company);
     }
 

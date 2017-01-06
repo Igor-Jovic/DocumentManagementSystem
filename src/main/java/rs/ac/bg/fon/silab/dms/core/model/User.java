@@ -21,7 +21,7 @@ public class User {
     @Column(name = "ROLE")
     private Role role;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "COMPANY_ID")
     private Company company;
 
