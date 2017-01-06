@@ -66,4 +66,32 @@ public class Activity {
     public void setParentProcess(Process parentProcess) {
         this.parentProcess = parentProcess;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Activity activity = (Activity) o;
+
+        if (!id.equals(activity.id)) return false;
+        return parentProcess.equals(activity.parentProcess);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + parentProcess.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parentProcess=" + parentProcess +
+                '}';
+    }
 }

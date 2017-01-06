@@ -8,28 +8,7 @@ import rs.ac.bg.fon.silab.dms.repository.DocumentRepository;
 
 import java.util.List;
 
-@Service("documentService")
+@Service
 public class DocumentService {
 
-    @Autowired
-    private DocumentRepository documentRepository;
-
-    public DocumentRepository getDocumentRepository() {
-        return documentRepository;
-    }
-
-    public void setDocumentRepository(DocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
-    }
-
-    public List<Document> getAllDocuments() {
-        List<Document> documents = documentRepository.findAll();
-        Document document = documents.get(0);
-        System.out.println(document.getName());
-        System.out.println(document.getDocumentDescriptorAssociations().size());
-        DocumentDescriptorAssociation documentDescriptorAssociation = document.getDocumentDescriptorAssociations().get(0);
-        System.out.println(documentDescriptorAssociation.getDescriptor().getName());
-
-        return documents;
-    }
 }

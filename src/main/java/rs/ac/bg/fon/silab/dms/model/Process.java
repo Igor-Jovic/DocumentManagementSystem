@@ -87,4 +87,36 @@ public class Process {
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Process process = (Process) o;
+
+        if (!id.equals(process.id)) return false;
+        return company.equals(process.company);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + company.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Process{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", isPrimitive=" + isPrimitive +
+                ", childProcesses=" + childProcesses +
+                ", parentProcess=" + parentProcess +
+                ", company=" + company +
+                ", activities=" + activities +
+                '}';
+    }
 }

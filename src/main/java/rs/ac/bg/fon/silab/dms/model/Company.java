@@ -18,6 +18,9 @@ public class Company {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<Process> processes;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    private List<User> employees;
+
     public Long getId() {
         return id;
     }
@@ -40,5 +43,39 @@ public class Company {
 
     public void setProcesses(List<Process> processes) {
         this.processes = processes;
+    }
+
+    public List<User> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<User> employees) {
+        this.employees = employees;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Company company = (Company) o;
+
+        return id.equals(company.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", processes=" + processes +
+                ", employees=" + employees +
+                '}';
     }
 }

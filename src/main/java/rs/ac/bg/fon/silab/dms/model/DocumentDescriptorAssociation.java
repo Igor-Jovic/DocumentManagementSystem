@@ -43,4 +43,12 @@ public class DocumentDescriptorAssociation implements Serializable {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "DocumentDescriptorAssociation{"+
+                ", descriptor=" + descriptor +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }
