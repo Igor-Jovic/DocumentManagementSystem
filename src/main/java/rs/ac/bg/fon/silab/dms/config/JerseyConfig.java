@@ -9,6 +9,7 @@ import rs.ac.bg.fon.silab.dms.rest.registration.RegistrationRestService;
 public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig() {
+        packages("rs.ac.bg.fon.silab.dms");
         register(HomeController.class);
         register(RegistrationRestService.class);
     }
