@@ -15,6 +15,13 @@ public class Descriptor {
     @Column(name = "NAME")
     private String name;
 
+    public Descriptor() {
+    }
+
+    public Descriptor(String name) {
+        this.name = name;
+    }
+    
     public Long getId() {
         return id;
     }

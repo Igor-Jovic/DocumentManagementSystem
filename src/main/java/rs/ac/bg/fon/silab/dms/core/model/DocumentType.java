@@ -13,7 +13,7 @@ public class DocumentType {
 
     @Column(name = "NAME")
     private String name;
-
+    
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "document_type_descriptor", joinColumns = {@JoinColumn(name = "DOCUMENT_TYPE_ID")},
             inverseJoinColumns = {@JoinColumn(name = "DESCRIPTOR_ID")})
