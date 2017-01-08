@@ -7,15 +7,16 @@ import java.util.List;
 @Table(name = "document")
 public class Document {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "NAME")
-    private String name;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "DOCUMENT_TYPE_ID", nullable = false)
+    private DocumentType documentType;
 
-    @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<DocumentDescriptorAssociation> documentDescriptorAssociations;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "document")
+    private List<DocumentDescriptorAssociation> documentDescriptorAssociationList;
 
     public Long getId() {
         return id;
@@ -25,44 +26,19 @@ public class Document {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public DocumentType getDocumentType() {
+        return documentType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
     }
 
-    public List<DocumentDescriptorAssociation> getDocumentDescriptorAssociations() {
-        return documentDescriptorAssociations;
+    public List<DocumentDescriptorAssociation> getDocumentDescriptorAssociationList() {
+        return documentDescriptorAssociationList;
     }
 
-    public void setDocumentDescriptorAssociations(List<DocumentDescriptorAssociation> documentDescriptorAssociations) {
-        this.documentDescriptorAssociations = documentDescriptorAssociations;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Document document = (Document) o;
-
-        return id.equals(document.id);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "Document{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", documentDescriptorAssociations=" + documentDescriptorAssociations +
-                '}';
+    public void setDocumentDescriptorAssociationList(List<DocumentDescriptorAssociation> documentDescriptorAssociationList) {
+        this.documentDescriptorAssociationList = documentDescriptorAssociationList;
     }
 }

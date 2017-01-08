@@ -16,11 +16,11 @@ public class Activity {
 
     @OneToOne
     @JoinColumn(name = "INPUT_DOCUMENT_ID")
-    private Document inputDocument;
+    private DocumentType inputDocument;
 
     @OneToOne
     @JoinColumn(name = "OUTPUT_DOCUMENT_ID")
-    private Document outputDocument;
+    private DocumentType outputDocument;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PARENT_PROCESS_ID")
@@ -42,19 +42,19 @@ public class Activity {
         this.name = name;
     }
 
-    public Document getInputDocument() {
+    public DocumentType getInputDocument() {
         return inputDocument;
     }
 
-    public void setInputDocument(Document inputDocument) {
+    public void setInputDocument(DocumentType inputDocument) {
         this.inputDocument = inputDocument;
     }
 
-    public Document getOutputDocument() {
+    public DocumentType getOutputDocument() {
         return outputDocument;
     }
 
-    public void setOutputDocument(Document outputDocument) {
+    public void setOutputDocument(DocumentType outputDocument) {
         this.outputDocument = outputDocument;
     }
 

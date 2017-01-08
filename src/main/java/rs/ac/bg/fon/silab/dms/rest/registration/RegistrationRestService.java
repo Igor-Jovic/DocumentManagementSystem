@@ -37,9 +37,7 @@ public class RegistrationRestService {
         if (!registrationRequest.isValid()) {
             throw new BadRequestException("A problem occured. In order to register you need to provide company name, username and password.");
         }
-
-        User user = null;
-        user = userService.createUser(createUserFromRequest(registrationRequest));
+        User user = userService.createUser(createUserFromRequest(registrationRequest));
 
         RegistrationResponse registrationResponse = createResponseFromUser(user);
         return Response.ok(registrationResponse).build();

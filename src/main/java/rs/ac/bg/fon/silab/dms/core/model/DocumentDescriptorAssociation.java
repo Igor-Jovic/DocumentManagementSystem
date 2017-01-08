@@ -45,8 +45,27 @@ public class DocumentDescriptorAssociation implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DocumentDescriptorAssociation that = (DocumentDescriptorAssociation) o;
+
+        if (document != null ? !document.equals(that.document) : that.document != null) return false;
+        return descriptor != null ? descriptor.equals(that.descriptor) : that.descriptor == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = document != null ? document.hashCode() : 0;
+        result = 31 * result + (descriptor != null ? descriptor.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
-        return "DocumentDescriptorAssociation{"+
+        return "DocumentDescriptorAssociation{" +
                 ", descriptor=" + descriptor +
                 ", value='" + value + '\'' +
                 '}';
