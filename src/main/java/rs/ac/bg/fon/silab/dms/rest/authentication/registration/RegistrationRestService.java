@@ -1,11 +1,10 @@
-package rs.ac.bg.fon.silab.dms.rest.registration;
+package rs.ac.bg.fon.silab.dms.rest.authentication.registration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
-import rs.ac.bg.fon.silab.dms.rest.registration.dto.RegistrationRequest;
-import rs.ac.bg.fon.silab.dms.rest.registration.dto.RegistrationResponse;
+import rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto.RegistrationRequest;
+import rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto.RegistrationResponse;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
@@ -17,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Component
-@Path("/registration")
+@Path("/users")
 public class RegistrationRestService {
 
     @Autowired
@@ -33,6 +32,7 @@ public class RegistrationRestService {
     @POST
     @Produces(value = MediaType.APPLICATION_JSON)
     @Consumes(value = MediaType.APPLICATION_JSON)
+    @Path("/registration")
     public Response register(RegistrationRequest registrationRequest) throws BadRequestException {
         if (!registrationRequest.isValid()) {
             throw new BadRequestException("A problem occured. In order to register you need to provide company name, username and password.");

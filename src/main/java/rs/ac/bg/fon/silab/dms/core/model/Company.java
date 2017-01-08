@@ -22,6 +22,9 @@ public class Company {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<User> employees;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<DocumentType> documentTypes;
+
     public Company() {
     }
 
@@ -60,6 +63,14 @@ public class Company {
 
     public void setEmployees(List<User> employees) {
         this.employees = employees;
+    }
+
+    public List<DocumentType> getDocumentTypes() {
+        return documentTypes;
+    }
+
+    public void setDocumentTypes(List<DocumentType> documentTypes) {
+        this.documentTypes = documentTypes;
     }
 
     @Override
