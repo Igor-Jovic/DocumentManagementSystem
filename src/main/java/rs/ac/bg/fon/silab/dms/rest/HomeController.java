@@ -1,18 +1,17 @@
 package rs.ac.bg.fon.silab.dms.rest;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-
-@Component
-@Path("/api-status")
+@RestController
+@RequestMapping("/api-status")
 public class HomeController {
 
-    @GET
-    public Response hello() {
-        return Response.ok("Server is up and running.")
-                .build();
+    @GetMapping
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("Server is up and running.");
     }
 }

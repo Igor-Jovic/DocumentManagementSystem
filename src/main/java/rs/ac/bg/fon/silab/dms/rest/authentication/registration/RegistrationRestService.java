@@ -1,22 +1,21 @@
 package rs.ac.bg.fon.silab.dms.rest.authentication.registration;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
-import rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto.RegistrationRequest;
-import rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto.RegistrationResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
+import rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto.RegistrationRequest;
+import rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto.RegistrationResponse;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-@Component
-@Path("/users")
+@RestController
+@RequestMapping("/users")
 public class RegistrationRestService {
 
     @Autowired
@@ -29,18 +28,15 @@ public class RegistrationRestService {
     }
 
     //should we add another mapping layer? maybe a class that Service will use to map objects
-    @POST
-    @Produces(value = MediaType.APPLICATION_JSON)
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    @Path("/registration")
-    public Response register(RegistrationRequest registrationRequest) throws BadRequestException {
+    @PostMapping(value = "/registration")
+    public ResponseEntity<RegistrationResponse> register(RegistrationRequest registrationRequest) throws BadRequestException {
         if (!registrationRequest.isValid()) {
             throw new BadRequestException("A problem occured. In order to register you need to provide company name, username and password.");
         }
         User user = userService.createUser(createUserFromRequest(registrationRequest));
 
         RegistrationResponse registrationResponse = createResponseFromUser(user);
-        return Response.ok(registrationResponse).build();
+        return ResponseEntity.ok(registrationResponse);
     }
 
     private User createUserFromRequest(RegistrationRequest registrationRequest) throws BadRequestException {
