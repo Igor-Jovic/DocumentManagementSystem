@@ -1,7 +1,9 @@
 package rs.ac.bg.fon.silab.dms.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
@@ -11,6 +13,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -19,6 +27,15 @@ public class UserService {
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new BadRequestException("User with given username already exists.");
         }
+        if (user.getPassword() == null || user.getRole() == null || user.getCompany() == null) {
+            throw new IllegalStateException("User is in a bad state.");
+        }
+        user.setPassword(encoder.encode(user.getPassword()));
+        companyService.createCompany(user.getCompany());
         return userRepository.saveAndFlush(user);
+    }
+
+    public User getUser(String username) {
+        return userRepository.findByUsername(username);
     }
 }

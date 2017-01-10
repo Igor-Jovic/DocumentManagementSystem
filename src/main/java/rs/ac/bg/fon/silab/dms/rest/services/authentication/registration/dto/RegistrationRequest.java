@@ -1,6 +1,8 @@
 package rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto;
 
 
+import static rs.ac.bg.fon.silab.dms.util.StringUtils.isStringEmptyOrNull;
+
 public class RegistrationRequest {
     public String username;
     public String password;
@@ -10,9 +12,5 @@ public class RegistrationRequest {
         return !isStringEmptyOrNull(username)
                 && !isStringEmptyOrNull(password)
                 && !isStringEmptyOrNull(companyName);
-    }
-
-    private boolean isStringEmptyOrNull(String string) {
-        return string == null || string.trim().isEmpty();
     }
 }

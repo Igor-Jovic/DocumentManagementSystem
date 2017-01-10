@@ -34,4 +34,7 @@ public class TokenAuthenticationService {
     }
 
 
+    public void removeAuthentication(String token) {
+        cachedAuthenticationData.remove(token);
+    }
 }

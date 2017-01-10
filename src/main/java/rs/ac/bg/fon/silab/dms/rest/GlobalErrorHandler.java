@@ -16,13 +16,13 @@ public class GlobalErrorHandler {
     // 400
     @ExceptionHandler({BadRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity handleInvalidMessageFormat(BadRequestException e) {
+    public ResponseEntity handleInvalidRequestFormat(Throwable e) {
         return ResponseEntity.badRequest().body(e.getLocalizedMessage());
     }
 
-    @ExceptionHandler({UnknownUserException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity handleUserNotFound(BadRequestException e) {
+    @ExceptionHandler({UnknownUserException.class, IllegalStateException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity handleUserNotFound(Throwable e) {
         return ResponseEntity.badRequest().body(e.getLocalizedMessage());
     }
 }

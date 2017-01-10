@@ -6,41 +6,38 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import rs.ac.bg.fon.silab.dms.core.model.User;
-import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
+import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.security.exception.UnknownUserException;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserRepository userRepository;
+    private UserService userService;
+
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
-    public CustomAuthenticationProvider(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomAuthenticationProvider(UserService userService, BCryptPasswordEncoder encoder) {
+        this.userService = userService;
+        this.encoder = encoder;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = (String) authentication.getPrincipal();
-        User user = userRepository.findByUsername(username);
+        User user = userService.getUser(username);
 
         if (user == null) {
             throw new UnknownUserException("Could not find user with username: " + username);
         }
-        if (!user.getPassword().equals(authentication.getCredentials())) {
-            throw new UnknownUserException("Wrong pass mate");
-        }
+        validatePassword((String) authentication.getCredentials(), user.getPassword());
         Authentication auth = new UsernamePasswordAuthenticationToken(
                 user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getRole().toString()));
         return auth;
     }
-
-//    @Override
-//    public boolean supports(Class<?> authentication) {
-//        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
-//    }
 
     @Override
     public boolean supports(Class<?> authentication) {
@@ -52,25 +49,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return result;
     }
 
-//    @Override
-//    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//
-//        // This is just an example
-//        // TODO implement check against the database once the User-related functionality is completed
-//        //put authentication to map
-//        return new UsernamePasswordAuthenticationToken(
-//                (String) authentication.getPrincipal(),
-//                (String) authentication.getCredentials(),
-//                Arrays.asList(new SimpleGrantedAuthority("role")));
-//    }
-//
-//    @Override
-//    public boolean supports(Class<?> authentication) {
-//        boolean result = false;
-//
-//        if (authentication.equals(UsernamePasswordAuthenticationToken.class))
-//            result = true;
-//
-//        return result;
-//    }
+    private void validatePassword(String provided, String expected) {
+        if (!encoder.matches((CharSequence) provided, expected)) {
+            throw new UnknownUserException("Wrong username or password.");
+        }
+    }
 }
