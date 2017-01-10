@@ -14,7 +14,6 @@ import rs.ac.bg.fon.silab.dms.security.exception.UnknownUserException;
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-
     private final UserRepository userRepository;
 
     @Autowired
@@ -24,16 +23,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        System.out.println("called auth provider");
         String username = (String) authentication.getPrincipal();
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
             throw new UnknownUserException("Could not find user with username: " + username);
         }
-
-        return new UsernamePasswordAuthenticationToken(
+        if (!user.getPassword().equals(authentication.getCredentials())) {
+            throw new UnknownUserException("Wrong pass mate");
+        }
+        Authentication auth = new UsernamePasswordAuthenticationToken(
                 user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getRole().toString()));
+        return auth;
     }
 
 //    @Override

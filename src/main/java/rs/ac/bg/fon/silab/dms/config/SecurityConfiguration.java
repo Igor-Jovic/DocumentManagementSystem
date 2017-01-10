@@ -39,6 +39,7 @@ public class SecurityConfiguration {
             http.addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
 
             http.authorizeRequests()
+                    .antMatchers("/login").permitAll()
                     .antMatchers("/api-status").permitAll()
                     .antMatchers("/admin").hasRole(Role.ADMIN.toString())
                     .antMatchers("/**").authenticated();

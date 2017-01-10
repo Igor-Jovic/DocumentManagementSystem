@@ -22,11 +22,10 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         //get the token
         String token = httpServletRequest.getHeader("X-Authorization");
-        System.out.println(token);
-
         //get authentication from TokenHandler
         Authentication authentication = tokenAuthenticationService.getAuthenticationByToken(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        //SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
