@@ -1,4 +1,4 @@
-package rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto;
+package rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto;
 
 
 public class RegistrationResponse {

@@ -3,22 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.ac.bg.fon.silab.dms.rest.documentType;
+package rs.ac.bg.fon.silab.dms.rest.services.documentType;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
-import rs.ac.bg.fon.silab.dms.rest.documentType.dto.DocumentTypeRequest;
-import rs.ac.bg.fon.silab.dms.rest.documentType.dto.DocumentTypeResponse;
+import rs.ac.bg.fon.silab.dms.rest.services.documentType.dto.DocumentTypeRequest;
+import rs.ac.bg.fon.silab.dms.rest.services.documentType.dto.DocumentTypeResponse;
 
 /**
  *

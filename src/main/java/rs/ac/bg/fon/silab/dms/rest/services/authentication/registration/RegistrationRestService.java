@@ -1,4 +1,4 @@
-package rs.ac.bg.fon.silab.dms.rest.authentication.registration;
+package rs.ac.bg.fon.silab.dms.rest.services.authentication.registration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +11,8 @@ import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
-import rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto.RegistrationRequest;
-import rs.ac.bg.fon.silab.dms.rest.authentication.registration.dto.RegistrationResponse;
+import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationRequest;
+import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationResponse;
 
 @RestController
 @RequestMapping("/users")

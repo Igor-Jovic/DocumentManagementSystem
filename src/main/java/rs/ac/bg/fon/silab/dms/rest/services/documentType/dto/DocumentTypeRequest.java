@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.ac.bg.fon.silab.dms.rest.documentType.dto;
+package rs.ac.bg.fon.silab.dms.rest.services.documentType.dto;
 
 import java.util.List;
 
