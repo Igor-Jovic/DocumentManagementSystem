@@ -14,19 +14,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * @author Slavko Komarica
- */
 public class SecurityFilter extends OncePerRequestFilter {
 
+    TokenAuthenticationService tokenAuthenticationService = TokenAuthenticationService.getInstance();
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         //get the token
         String token = httpServletRequest.getHeader("X-Authorization");
         System.out.println(token);
+
         //get authentication from TokenHandler
-        //SecurityContextHolder.getContext().setAuthentication(authentication);
+        Authentication authentication = tokenAuthenticationService.getAuthenticationByToken(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
