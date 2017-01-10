@@ -16,9 +16,10 @@ import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.Regi
 import rs.ac.bg.fon.silab.dms.security.CustomAuthenticationProvider;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
 
+import java.time.LocalDateTime;
+
 @RestController
 public class LoginRestService extends AuthenticationRestService {
-
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
 
@@ -49,7 +50,7 @@ public class LoginRestService extends AuthenticationRestService {
     private String handleAuthentication(LoginRequest loginRequest) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password);
         authentication = authenticationProvider.authenticate(authentication);
-        return tokenAuthenticationService.saveAuthentication(authentication);
+        return tokenAuthenticationService.saveAuthentication(authentication, LocalDateTime.now());
     }
 
     private void validateRequest(LoginRequest loginRequest) throws BadRequestException {
