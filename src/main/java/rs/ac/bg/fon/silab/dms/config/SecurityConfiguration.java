@@ -24,13 +24,13 @@ public class SecurityConfiguration {
             http.addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
 
             http.authorizeRequests()
-                    .antMatchers("/auth/**").permitAll()
-                    .antMatchers("/api-status").permitAll()
-                    .antMatchers("/admin").hasAuthority(Role.ADMIN.toString())
-                    .antMatchers("/auth/logout").authenticated()
-                    .antMatchers("/documents").permitAll()
-                    .antMatchers("/processes").permitAll()
-                    .antMatchers("/**").authenticated();
+                    .antMatchers("/dms/auth/**").permitAll()
+                    .antMatchers("/dms/api-status").permitAll()
+                    .antMatchers("/dms/admin").hasAuthority(Role.ADMIN.toString())
+                    .antMatchers("/dms/documents").permitAll()
+                    .antMatchers("/dms/processes").permitAll()
+                    .antMatchers("/dms/auth/logout").authenticated()
+                    .antMatchers("/dms/**").authenticated();
 
             http.exceptionHandling()
                     .and()

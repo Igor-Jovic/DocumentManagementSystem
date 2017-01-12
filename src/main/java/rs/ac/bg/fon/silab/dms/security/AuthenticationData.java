@@ -4,13 +4,20 @@ import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;
 
-class AuthenticationData {
+public class AuthenticationData {
     private Authentication authentication;
     private LocalDateTime authenticationTime;
+    private String token;
 
-    public AuthenticationData(Authentication authentication, LocalDateTime authenticationTime) {
+
+    public AuthenticationData(String token, Authentication authentication, LocalDateTime authenticationTime) {
         this.authentication = authentication;
         this.authenticationTime = authenticationTime;
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public Authentication getAuthentication() {
@@ -19,5 +26,9 @@ class AuthenticationData {
 
     public LocalDateTime getAuthenticationTime() {
         return authenticationTime;
+    }
+
+    public String getRole() {
+        return authentication.getAuthorities().toArray()[0].toString();
     }
 }

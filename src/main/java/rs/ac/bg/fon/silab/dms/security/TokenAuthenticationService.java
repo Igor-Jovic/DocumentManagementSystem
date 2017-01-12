@@ -36,10 +36,11 @@ public class TokenAuthenticationService {
         return authenticationData;
     }
 
-    public String saveAuthentication(Authentication authentication, LocalDateTime localDateTime) {
+    public AuthenticationData saveAuthentication(Authentication authentication, LocalDateTime localDateTime) {
         String token = generateToken();
-        cachedAuthenticationData.put(token, new AuthenticationData(authentication, localDateTime));
-        return token;
+        AuthenticationData authenticationData = new AuthenticationData(token, authentication, localDateTime);
+        cachedAuthenticationData.put(token, new AuthenticationData(token, authentication, localDateTime));
+        return authenticationData;
     }
 
     public void removeAuthentication(String token) {
