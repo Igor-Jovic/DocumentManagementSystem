@@ -3,28 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.ac.bg.fon.silab.dms.rest.services.documentType.dto;
+package rs.ac.bg.fon.silab.dms.rest.services.process.dto;
 
-import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
-
+import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 
 /**
  *
  * @author stefan
  */
-public class DescriptorResponse {
-    
+public class DocumentTypeTreeResponse {
+
     private Long id;
     private String name;
 
-    public DescriptorResponse() {
+    public DocumentTypeTreeResponse() {
     }
 
-    public DescriptorResponse(Descriptor descriptor) {
-        this.id = descriptor.getId();
-        this.name = descriptor.getName();
+    public DocumentTypeTreeResponse(DocumentType documentType) {
+        this.id = documentType.getId();
+        this.name = documentType.getName();
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -40,5 +39,5 @@ public class DescriptorResponse {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 }

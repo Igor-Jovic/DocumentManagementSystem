@@ -16,15 +16,15 @@ public class Activity {
 
     @OneToOne
     @JoinColumn(name = "INPUT_DOCUMENT_ID")
-    private DocumentType inputDocument;
+    private Document inputDocument;
 
     @OneToOne
     @JoinColumn(name = "OUTPUT_DOCUMENT_ID")
-    private DocumentType outputDocument;
+    private Document outputDocument;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PARENT_PROCESS_ID")
-    private Process parentProcess;
+    private CompanyProcess parentProcess;
 
     public Long getId() {
         return id;
@@ -42,27 +42,27 @@ public class Activity {
         this.name = name;
     }
 
-    public DocumentType getInputDocument() {
+    public Document getInputDocument() {
         return inputDocument;
     }
 
-    public void setInputDocument(DocumentType inputDocument) {
+    public void setInputDocument(Document inputDocument) {
         this.inputDocument = inputDocument;
     }
 
-    public DocumentType getOutputDocument() {
+    public Document getOutputDocument() {
         return outputDocument;
     }
 
-    public void setOutputDocument(DocumentType outputDocument) {
+    public void setOutputDocument(Document outputDocument) {
         this.outputDocument = outputDocument;
     }
 
-    public Process getParentProcess() {
+    public CompanyProcess getParentProcess() {
         return parentProcess;
     }
 
-    public void setParentProcess(Process parentProcess) {
+    public void setParentProcess(CompanyProcess parentProcess) {
         this.parentProcess = parentProcess;
     }
 

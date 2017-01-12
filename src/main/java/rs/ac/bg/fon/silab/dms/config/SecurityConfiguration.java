@@ -28,6 +28,8 @@ public class SecurityConfiguration {
                     .antMatchers("/api-status").permitAll()
                     .antMatchers("/admin").hasAuthority(Role.ADMIN.toString())
                     .antMatchers("/auth/logout").authenticated()
+                    .antMatchers("/documents").permitAll()
+                    .antMatchers("/processes").permitAll()
                     .antMatchers("/**").authenticated();
 
             http.exceptionHandling()

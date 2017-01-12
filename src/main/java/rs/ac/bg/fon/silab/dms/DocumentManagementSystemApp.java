@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
+import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
 
 @SpringBootApplication
@@ -26,9 +27,16 @@ public class DocumentManagementSystemApp {
         return new CommandLineRunner() {
             @Autowired
             private UserService userService;
+            
+            @Autowired
+            private CompanyService companyService;
 
             public void setUserService(UserService userService) {
                 this.userService = userService;
+            }
+
+            public void setCompanyService(CompanyService companyService) {
+                this.companyService = companyService;
             }
 
             @Override
@@ -39,6 +47,10 @@ public class DocumentManagementSystemApp {
                 u.setRole(Role.ADMIN);
                 u.setCompany(new Company("adminCompany"));
                 userService.createUser(u);
+                Company company = new Company();
+                company.setId(1l);
+                company.setName("DMS");
+                companyService.createCompany(company);
             }
         };
     }

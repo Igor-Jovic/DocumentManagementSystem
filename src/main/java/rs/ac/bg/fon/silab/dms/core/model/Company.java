@@ -17,7 +17,7 @@ public class Company {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private List<Process> processes;
+    private List<CompanyProcess> processes;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<User> employees;
@@ -49,11 +49,11 @@ public class Company {
         this.name = name;
     }
 
-    public List<Process> getProcesses() {
+    public List<CompanyProcess> getProcesses() {
         return processes;
     }
 
-    public void setProcesses(List<Process> processes) {
+    public void setProcesses(List<CompanyProcess> processes) {
         this.processes = processes;
     }
 

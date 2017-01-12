@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "process")
-public class Process {
+public class CompanyProcess {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,11 +19,11 @@ public class Process {
     private boolean isPrimitive;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentProcess")
-    private List<Process> childProcesses;
+    private List<CompanyProcess> childProcesses;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PARENT_ID")
-    private Process parentProcess;
+    private CompanyProcess parentProcess;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "COMPANY_ID")
@@ -56,19 +56,19 @@ public class Process {
         isPrimitive = primitive;
     }
 
-    public List<Process> getChildProcesses() {
+    public List<CompanyProcess> getChildProcesses() {
         return childProcesses;
     }
 
-    public void setChildProcesses(List<Process> childProcesses) {
+    public void setChildProcesses(List<CompanyProcess> childProcesses) {
         this.childProcesses = childProcesses;
     }
 
-    public Process getParentProcess() {
+    public CompanyProcess getParentProcess() {
         return parentProcess;
     }
 
-    public void setParentProcess(Process parentProcess) {
+    public void setParentProcess(CompanyProcess parentProcess) {
         this.parentProcess = parentProcess;
     }
 
@@ -93,7 +93,7 @@ public class Process {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Process process = (Process) o;
+        CompanyProcess process = (CompanyProcess) o;
 
         if (!id.equals(process.id)) return false;
         return company.equals(process.company);

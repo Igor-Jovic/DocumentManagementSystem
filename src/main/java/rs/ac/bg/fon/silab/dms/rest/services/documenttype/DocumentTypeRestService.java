@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.ac.bg.fon.silab.dms.rest.services.documentType;
+package rs.ac.bg.fon.silab.dms.rest.services.documenttype;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
-import rs.ac.bg.fon.silab.dms.rest.services.documentType.dto.DocumentTypeRequest;
-import rs.ac.bg.fon.silab.dms.rest.services.documentType.dto.DocumentTypeResponse;
+import rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto.DocumentTypeRequest;
+import rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto.DocumentTypeResponse;
 
 /**
  *
@@ -30,7 +31,8 @@ public class DocumentTypeRestService {
     private DocumentTypeService documentService;
 
     @PostMapping
-    public ResponseEntity<DocumentTypeResponse> create(DocumentTypeRequest documentRequest) throws BadRequestException {
+    public ResponseEntity<DocumentTypeResponse> create(RequestEntity<DocumentTypeRequest> request) throws BadRequestException {
+        DocumentTypeRequest documentRequest = request.getBody();
         DocumentType documentType = documentService.createDocumentType(createDocumentTypeFromRequest(documentRequest));
 
         DocumentTypeResponse documentTypeResponse = new DocumentTypeResponse(documentType);
