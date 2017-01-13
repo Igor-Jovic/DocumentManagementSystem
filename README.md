@@ -10,8 +10,8 @@ Java, IDE of choice, git, maven, bower, MySql
 
 In order to get a working copy on your machine open terminal and execute this commands: <br />
 1. git clone https://github.com/Igor-Jovic/DocumentManagementSystem-Backend <br />
-2. cd DocumentManagementSystem-Backend
-3. ./workspace-init.sh 
+2. cd DocumentManagementSystem-Backend <br />
+3. ./workspace-init.sh <br />
 
 Now, make sure MySql server is running and local credentials are updated in application.properties file. 
 To generate database schema go to application.properties and set ddl property to create:
