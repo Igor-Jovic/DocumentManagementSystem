@@ -8,7 +8,7 @@ Java, IDE of choice, git, maven, bower, MySql
 
 ## Getting Started
 
-In order to get a working copy on your machine open terminal and execute this commands: <br />
+In order to get a working copy on your machine open terminal and execute following commands: <br />
 1. git clone https://github.com/Igor-Jovic/DocumentManagementSystem-Backend <br />
 2. cd DocumentManagementSystem-Backend <br />
 3. ./workspace-init.sh <br />
