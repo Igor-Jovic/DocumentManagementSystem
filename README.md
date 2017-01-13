@@ -4,12 +4,7 @@ A Web application written in Java usings Spring Boot. It exposes relevant REST s
 
 ### Prerequisites
 
--Java
--IDE choice
--git
--maven
--bower
--MySql
+Java, IDE of choice, git, maven, bower, MySql
 
 ## Getting Started
 
