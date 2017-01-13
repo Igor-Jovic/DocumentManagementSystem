@@ -8,8 +8,12 @@ Java, IDE of choice, git, maven, bower, MySql
 
 ## Getting Started
 
-In order to get a working copy on your machine, run the workspace-init.sh script which will clone this repository and integrate Frontend part into it. 
-Make sure MySql server is running and local credentials are updated in application.properties file. 
+In order to get a working copy on your machine open terminal and execute this commands: <br />
+1. git clone https://github.com/Igor-Jovic/DocumentManagementSystem-Backend <br />
+2. cd DocumentManagementSystem-Backend
+3. ./workspace-init.sh 
+
+Now, make sure MySql server is running and local credentials are updated in application.properties file. 
 To generate database schema go to application.properties and set ddl property to create:
   spring.jpa.hibernate.ddl-auto=create
 At last, resolve Maven dependencies and run DocumentManagementSystemApp.java as a Java application. 
