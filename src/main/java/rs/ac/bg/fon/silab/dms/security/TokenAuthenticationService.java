@@ -24,7 +24,7 @@ public class TokenAuthenticationService {
         return instance;
     }
 
-    public AuthenticationData getAuthenticationByToken(String token) {
+    public AuthenticationData getAuthenticationData(String token) {
         AuthenticationData authenticationData = cachedAuthenticationData.get(token);
         if (authenticationData == null) {
             return null;

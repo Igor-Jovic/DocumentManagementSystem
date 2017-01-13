@@ -1,10 +1,5 @@
 package rs.ac.bg.fon.silab.dms.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -12,7 +7,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class SecurityFilter extends OncePerRequestFilter {
 
@@ -22,8 +16,10 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String token = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
-        AuthenticationData authenticationData = tokenAuthenticationService.getAuthenticationByToken(token);
+        System.out.println("TOKEN: " + token);
+        AuthenticationData authenticationData = tokenAuthenticationService.getAuthenticationData(token);
         if (authenticationData != null) {
+            System.out.println("access allowed");
             SecurityContextHolder.getContext().setAuthentication(authenticationData.getAuthentication());
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

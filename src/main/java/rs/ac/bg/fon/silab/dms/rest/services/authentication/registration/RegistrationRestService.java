@@ -14,32 +14,19 @@ import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationRestSer
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationResponse;
 
-import static rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.RegistrationMapper.mapUserToResponse;
-import static rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.RegistrationMapper.mapRequestToUser;
+import static rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationMapper.registrationRequestToUser;
+import static rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationMapper.userToRegistrationResponse;
 
 @RestController
 public class RegistrationRestService extends AuthenticationRestService {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CompanyService companyService;
-
-    public void setCompanyService(CompanyService companyService) {
-        this.companyService = companyService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping(value = "/registration")
     public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest registrationRequest) throws BadRequestException {
         validateRequest(registrationRequest);
         companyService.createCompany(new Company(registrationRequest.companyName));
-        User user = userService.createUser(mapRequestToUser(registrationRequest));
-        return ResponseEntity.ok(mapUserToResponse(user));
+        User user = userService.createUser(registrationRequestToUser(registrationRequest));
+        return ResponseEntity.ok(userToRegistrationResponse(user));
     }
 
     private void validateRequest(RegistrationRequest registrationRequest) throws BadRequestException {
