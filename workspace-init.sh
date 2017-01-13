@@ -3,7 +3,7 @@
 # Run as Administrator
 echo "======================================="
 echo "Cloning DocumentManagementSystem-FrontEnd into DocumentManagementSystem-Backend/src/main/resources/static"
-cd DocumentManagementSystem-Backend/src/main/resources
+cd src/main/resources
 git clone https://github.com/Igor-Jovic/DocumentManagementSystem-Frontend.git static
 
 echo "======================================="
