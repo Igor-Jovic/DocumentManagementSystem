@@ -60,7 +60,7 @@ public class LoginRestService extends AuthenticationRestService {
 
     private void validateRequest(LoginRequest loginRequest) throws BadRequestException {
         if (!loginRequest.isValid()) {
-            throw new BadRequestException("A problem occured. In order to login you need to provide username and password.");
+            throw new BadRequestException("In order to login you need to provide username and password.");
         }
 
     }

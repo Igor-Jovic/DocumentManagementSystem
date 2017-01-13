@@ -44,7 +44,7 @@ public class RegistrationRestService extends AuthenticationRestService {
 
     private void validateRequest(RegistrationRequest registrationRequest) throws BadRequestException {
         if (!registrationRequest.isValid()) {
-            throw new BadRequestException("A problem occured. In order to register you need to provide company name, username and password.");
+            throw new BadRequestException("In order to register you need to provide company name, username and password.");
         }
     }
 

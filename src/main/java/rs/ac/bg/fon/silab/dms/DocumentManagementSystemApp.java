@@ -27,7 +27,7 @@ public class DocumentManagementSystemApp {
         return new CommandLineRunner() {
             @Autowired
             private UserService userService;
-            
+
             @Autowired
             private CompanyService companyService;
 
@@ -45,7 +45,9 @@ public class DocumentManagementSystemApp {
                 u.setUsername("admin");
                 u.setPassword("admin");
                 u.setRole(Role.ADMIN);
-                u.setCompany(new Company("adminCompany"));
+                Company adminCompany = new Company("adminCompany");
+                companyService.createCompany(adminCompany);
+                u.setCompany(adminCompany);
                 userService.createUser(u);
                 Company company = new Company();
                 company.setId(1l);
