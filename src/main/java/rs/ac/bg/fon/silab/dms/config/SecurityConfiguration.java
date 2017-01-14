@@ -24,9 +24,8 @@ public class SecurityConfiguration {
             http.addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
 
             http.authorizeRequests()
-                    .antMatchers("/admin").hasAuthority(Role.ADMIN.toString())
+                    .antMatchers("/users").hasAuthority(Role.ADMIN.toString())
                     .antMatchers("/auth/**").permitAll()
-                    .antMatchers("/api-status").permitAll()
                     .antMatchers("/documents").permitAll()
                     .antMatchers("/processes").permitAll()
                     .antMatchers("/auth/logout").authenticated()

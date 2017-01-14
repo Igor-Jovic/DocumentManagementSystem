@@ -26,7 +26,7 @@ public class RegistrationRestService extends AuthenticationRestService {
     @PostMapping(value = "/registration")
     public ResponseEntity register(@RequestBody RegistrationRequest registrationRequest) throws BadRequestException {
         validateRequest(registrationRequest);
-        User user = userService.createAdmin(registrationRequestToUser(registrationRequest));
+        User user = userService.createUserWithNewCompany(registrationRequestToUser(registrationRequest));
         return (ResponseEntity) ResponseEntity.ok(createSuccessResponse(userToRegistrationResponse(user)));
     }
 

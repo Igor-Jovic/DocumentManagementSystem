@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
-import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
 
 @SpringBootApplication
@@ -34,9 +33,9 @@ public class DocumentManagementSystemApp {
                 User u = new User();
                 u.setUsername("admin");
                 u.setPassword("admin");
-                u.setRole(Role.ADMIN);
                 u.setCompany(new Company("adminCompany"));
-                userService.createAdmin(u);
+                u.setRole(Role.ADMIN);
+                userService.createUserWithNewCompany(u);
             }
         };
     }

@@ -13,8 +13,7 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
 
     @Test(expected = BadRequestException.class)
-    public void createAdmin_userExists_throwBadRequestException() throws BadRequestException {
-
+    public void validateUser_userExists_throwBadRequestException() throws BadRequestException {
         Company adminCompany = new Company("adminCompany");
         User user = new User("admin", "admin", Role.ADMIN, adminCompany);
         UserRepository userRepositoryMock = mock(UserRepository.class);
@@ -25,22 +24,22 @@ public class UserServiceTest {
 
         UserService testee = new UserService(userRepositoryMock, null, companyServiceMock);
 
-        testee.createAdmin(user);
+        testee.validateUser(user);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void createAdmin_userInIllegalState_throwIllegalStateException() throws BadRequestException {
+    public void validateUser_userInIllegalState_throwIllegalStateException() throws BadRequestException {
         User user = new User("admin", null, Role.ADMIN, null);
         UserRepository userRepositoryMock = mock(UserRepository.class);
-        when(userRepositoryMock.findByUsername("admin")).thenReturn(null);
-        UserService testee = new UserService(userRepositoryMock, null, null);
 
-        testee.createAdmin(user);
+        when(userRepositoryMock.findByUsername("admin")).thenReturn(null);
+
+        UserService testee = new UserService(userRepositoryMock, null, null);
+        testee.validateUser(user);
     }
 
     @Test
-    public void createAdmin_validUser_saveUser() throws BadRequestException {
-        //GIVEN
+    public void createUserWithNewCompany_validUser_saveUser() throws BadRequestException {
         Company adminCompany = new Company("admin");
         User user = new User("admin", "admin", Role.ADMIN, adminCompany);
         UserRepository userRepositoryMock = mock(UserRepository.class);
@@ -52,27 +51,44 @@ public class UserServiceTest {
         when(companyServiceMock.createCompany(adminCompany)).thenReturn(adminCompany);
 
         UserService testee = new UserService(userRepositoryMock, encoderMock, companyServiceMock);
-        //WHEN
-        testee.createAdmin(user);
-        //THEN
+        testee.createUserWithNewCompany(user);
+
         verify(encoderMock, times(1)).encode("admin");
         verify(userRepositoryMock, times(1)).saveAndFlush(user);
+        verify(companyServiceMock, times(1)).createCompany(adminCompany);
     }
 
     @Test(expected = BadRequestException.class)
-    public void createAdmin_companyExists_doNotSaveUser() throws BadRequestException {
-        //GIVEN
+    public void createUserWithNewCompany_companyExists_doNotSaveUser() throws BadRequestException {
         Company adminCompany = new Company("admin");
         User user = new User("admin", "admin", Role.ADMIN, adminCompany);
         UserRepository userRepositoryMock = mock(UserRepository.class);
         CompanyService companyServiceMock = mock(CompanyService.class);
+
         when(userRepositoryMock.findByUsername("admin")).thenReturn(null);
         when(companyServiceMock.createCompany(adminCompany)).thenThrow(new BadRequestException("Company with given name already exists."));
 
         UserService testee = new UserService(userRepositoryMock, null, companyServiceMock);
-        //WHEN
-        testee.createAdmin(user);
-        //THEN
+        testee.createUserWithNewCompany(user);
+
         verify(userRepositoryMock, never()).saveAndFlush(user);
+    }
+
+    @Test
+    public void createUser_userDoesntExist_saveUser() throws BadRequestException {
+        Company adminCompany = new Company("userCompany");
+        User user = new User("user", "user", Role.USER, adminCompany);
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        CompanyService companyServiceMock = mock(CompanyService.class);
+        BCryptPasswordEncoder encoderMock = mock(BCryptPasswordEncoder.class);
+
+        when(userRepositoryMock.findByUsername("user")).thenReturn(null);
+        when(companyServiceMock.createCompany(adminCompany)).thenReturn(adminCompany);
+        when(encoderMock.encode("admin")).thenReturn("adminPassEncoded");
+
+        UserService testee = new UserService(userRepositoryMock, encoderMock, companyServiceMock);
+        testee.createUser(user);
+
+        verify(userRepositoryMock, times(1)).saveAndFlush(user);
     }
 }
