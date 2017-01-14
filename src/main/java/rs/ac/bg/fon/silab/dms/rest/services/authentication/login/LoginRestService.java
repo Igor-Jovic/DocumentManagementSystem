@@ -1,6 +1,7 @@
 package rs.ac.bg.fon.silab.dms.rest.services.authentication.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,10 +30,10 @@ public class LoginRestService extends AuthenticationRestService {
         return (ResponseEntity) ResponseEntity.ok(createSuccessResponse(loginResponse));
     }
 
-    @PostMapping(value = "/logout")
+    @DeleteMapping(value = "/logout")
     public ResponseEntity logout(@RequestHeader("X-Authorization") String token) throws BadRequestException {
         tokenAuthenticationService.removeAuthentication(token);
-        return (ResponseEntity) ResponseEntity.ok(createErrorResponse("Logged out"));
+        return (ResponseEntity) ResponseEntity.status(HttpStatus.FORBIDDEN).body(createErrorResponse("Logged out"));
     }
 
     @GetMapping(value = "/user")

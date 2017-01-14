@@ -14,6 +14,7 @@ import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationRestSer
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationResponse;
 
+import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
 import static rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationMapper.registrationRequestToUser;
 import static rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationMapper.userToRegistrationResponse;
 
@@ -22,11 +23,11 @@ public class RegistrationRestService extends AuthenticationRestService {
 
 
     @PostMapping(value = "/registration")
-    public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest registrationRequest) throws BadRequestException {
+    public ResponseEntity register(@RequestBody RegistrationRequest registrationRequest) throws BadRequestException {
         validateRequest(registrationRequest);
-        companyService.createCompany(new Company(registrationRequest.companyName));
-        User user = userService.createUser(registrationRequestToUser(registrationRequest));
-        return ResponseEntity.ok(userToRegistrationResponse(user));
+        Company company = companyService.createCompany(new Company(registrationRequest.companyName));
+        User user = userService.createUser(registrationRequestToUser(registrationRequest, company));
+        return (ResponseEntity) ResponseEntity.ok(createSuccessResponse(userToRegistrationResponse(user)));
     }
 
     private void validateRequest(RegistrationRequest registrationRequest) throws BadRequestException {
