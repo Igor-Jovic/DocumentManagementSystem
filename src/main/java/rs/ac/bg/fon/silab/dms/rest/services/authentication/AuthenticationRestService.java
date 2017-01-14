@@ -14,28 +14,14 @@ public class AuthenticationRestService {
     protected UserService userService;
 
     @Autowired
-    protected CompanyService companyService;
-
-    @Autowired
     protected CustomAuthenticationProvider authenticationProvider;
 
     @Autowired
     protected TokenAuthenticationService tokenAuthenticationService;
 
-    public void setAuthenticationProvider(CustomAuthenticationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
-    }
-
-    public void setTokenAuthenticationService(TokenAuthenticationService tokenAuthenticationService) {
+    public AuthenticationRestService(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
+        this.authenticationProvider = customAuthenticationProvider;
+        this.userService = userService;
         this.tokenAuthenticationService = tokenAuthenticationService;
     }
-
-    public void setCompanyService(CompanyService companyService) {
-        this.companyService = companyService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
 }

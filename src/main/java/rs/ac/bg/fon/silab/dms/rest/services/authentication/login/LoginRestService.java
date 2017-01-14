@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationRestService;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.login.dto.LoginRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.login.dto.LoginResponse;
@@ -22,6 +23,10 @@ import static rs.ac.bg.fon.silab.dms.rest.services.authentication.Authentication
 
 @RestController
 public class LoginRestService extends AuthenticationRestService {
+
+    public LoginRestService(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
+        super(userService, customAuthenticationProvider, tokenAuthenticationService);
+    }
 
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) throws BadRequestException {

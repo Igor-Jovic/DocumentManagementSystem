@@ -3,6 +3,7 @@ package rs.ac.bg.fon.silab.dms.core.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
@@ -18,27 +19,27 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    protected CompanyService companyService;
+
+    @Autowired
     private BCryptPasswordEncoder encoder;
 
-    public UserService() {
-    }
 
-    UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, CompanyService companyService) {
         this.encoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
+        this.companyService = companyService;
     }
 
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public User createUser(User user) throws BadRequestException {
+    @Transactional
+    public User createAdmin(User user) throws BadRequestException {
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new BadRequestException("User with given username already exists.");
         }
         if (isStringEmptyOrNull(user.getPassword()) || user.getRole() == null || user.getCompany() == null) {
             throw new IllegalStateException("User is in a bad state.");
         }
+        companyService.createCompany(user.getCompany());
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.saveAndFlush(user);
     }

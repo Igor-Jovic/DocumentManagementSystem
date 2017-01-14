@@ -12,8 +12,8 @@ import rs.ac.bg.fon.silab.dms.security.AuthenticationData;
 
 public class AuthenticationMapper {
 
-    public static User registrationRequestToUser(RegistrationRequest registrationRequest, Company company) throws BadRequestException {
-        return new User(registrationRequest.username, registrationRequest.password, Role.ADMIN, company);
+    public static User registrationRequestToUser(RegistrationRequest registrationRequest) throws BadRequestException {
+        return new User(registrationRequest.username, registrationRequest.password, Role.ADMIN, new Company(registrationRequest.companyName));
     }
 
     public static RegistrationResponse userToRegistrationResponse(User user) {

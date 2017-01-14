@@ -1,18 +1,16 @@
 package rs.ac.bg.fon.silab.dms.rest.services.authentication.registration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
-import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.User;
-import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationRestService;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationRequest;
-import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationResponse;
+import rs.ac.bg.fon.silab.dms.security.CustomAuthenticationProvider;
+import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
 
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
 import static rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationMapper.registrationRequestToUser;
@@ -21,12 +19,14 @@ import static rs.ac.bg.fon.silab.dms.rest.services.authentication.Authentication
 @RestController
 public class RegistrationRestService extends AuthenticationRestService {
 
+    public RegistrationRestService(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
+        super(userService, customAuthenticationProvider, tokenAuthenticationService);
+    }
 
     @PostMapping(value = "/registration")
     public ResponseEntity register(@RequestBody RegistrationRequest registrationRequest) throws BadRequestException {
         validateRequest(registrationRequest);
-        Company company = companyService.createCompany(new Company(registrationRequest.companyName));
-        User user = userService.createUser(registrationRequestToUser(registrationRequest, company));
+        User user = userService.createAdmin(registrationRequestToUser(registrationRequest));
         return (ResponseEntity) ResponseEntity.ok(createSuccessResponse(userToRegistrationResponse(user)));
     }
 
