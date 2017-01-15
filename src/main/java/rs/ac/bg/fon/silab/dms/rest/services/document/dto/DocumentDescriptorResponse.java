@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.ac.bg.fon.silab.dms.rest.services.process.dto;
+package rs.ac.bg.fon.silab.dms.rest.services.document.dto;
 
 import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
 
@@ -11,25 +11,17 @@ import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
  *
  * @author stefan
  */
-public class DocumentDescriptorTreeResponse {
+public class DocumentDescriptorResponse {
     
     private String descriptor;
     private String value;
 
-    public DocumentDescriptorTreeResponse() {
+    public DocumentDescriptorResponse() {
     }
 
-    public DocumentDescriptorTreeResponse(DocumentDescriptorAssociation association) {
+    public DocumentDescriptorResponse(DocumentDescriptorAssociation association) {
         this.descriptor = association.getDescriptor().getName();
         this.value = association.getValue();
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     public String getDescriptor() {
@@ -39,5 +31,15 @@ public class DocumentDescriptorTreeResponse {
     public void setDescriptor(String descriptor) {
         this.descriptor = descriptor;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+    
+    
     
 }

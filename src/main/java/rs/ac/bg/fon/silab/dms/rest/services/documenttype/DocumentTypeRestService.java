@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
+import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
 import rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto.DocumentTypeRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto.DocumentTypeResponse;
 
@@ -24,35 +24,34 @@ import rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto.DocumentTypeRespons
  * @author stefan
  */
 @RestController
-@RequestMapping("/documents")
+@RequestMapping("/documenttypes")
 public class DocumentTypeRestService {
 
     @Autowired
     private DocumentTypeService documentService;
 
     @PostMapping
-    public ResponseEntity<DocumentTypeResponse> create(RequestEntity<DocumentTypeRequest> request) throws BadRequestException {
-        DocumentTypeRequest documentRequest = request.getBody();
+    public ResponseEntity create(@RequestBody DocumentTypeRequest documentRequest) throws BadRequestException {
         DocumentType documentType = documentService.createDocumentType(createDocumentTypeFromRequest(documentRequest));
 
         DocumentTypeResponse documentTypeResponse = new DocumentTypeResponse(documentType);
-        return ResponseEntity.ok(documentTypeResponse);
+        return ResponseEntity.ok(createSuccessResponse(documentTypeResponse));
     }
 
     @GetMapping
-    public ResponseEntity<List<DocumentTypeResponse>> getAll() {
+    public ResponseEntity getAll() {
         List<DocumentType> allDocumentTypes = documentService.getAllDocumentTypes();
 
         List<DocumentTypeResponse> documentTypeResponses = DocumentTypeResponse.getDocumentTypeResponseList(allDocumentTypes);
-        return ResponseEntity.ok(documentTypeResponses);
+        return ResponseEntity.ok(createSuccessResponse(documentTypeResponses));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DocumentTypeResponse> getOne(@PathVariable("id") Long id) throws BadRequestException {
+    public ResponseEntity getOne(@PathVariable("id") Long id) throws BadRequestException {
         DocumentType documentType = documentService.getDocumentType(id);
 
         DocumentTypeResponse documentTypeResponse = new DocumentTypeResponse(documentType);
-        return ResponseEntity.ok(documentTypeResponse);
+        return ResponseEntity.ok(createSuccessResponse(documentTypeResponse));
     }
 
     private DocumentType createDocumentTypeFromRequest(DocumentTypeRequest documentRequest) {

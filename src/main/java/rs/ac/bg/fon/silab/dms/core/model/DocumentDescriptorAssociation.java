@@ -7,18 +7,50 @@ import java.io.Serializable;
 @Table(name = "document_descriptor")
 public class DocumentDescriptorAssociation implements Serializable {
 
-    @Id
+    @EmbeddedId
+    private DocumentDescriptorAssociationPK descriptorAssociationPK;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "DOCUMENT_ID")
     private Document document;
 
-    @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "DESCRIPTOR_ID")
     private Descriptor descriptor;
 
     @Column(name = "VALUE")
     private String value;
+
+    public DocumentDescriptorAssociation() {
+    }
+
+    public DocumentDescriptorAssociation(DocumentDescriptorAssociationPK pk) {
+        this.descriptorAssociationPK = pk;
+    }
+
+    public DocumentDescriptorAssociation(long document, long descriptor) {
+        this.descriptorAssociationPK = new DocumentDescriptorAssociationPK(document, descriptor);
+    }
+
+    public DocumentDescriptorAssociation(long document, long descriptor, String value) {
+        this.descriptorAssociationPK = new DocumentDescriptorAssociationPK(document, descriptor);
+        this.value = value;
+    }
+
+    public DocumentDescriptorAssociation(Document document, Descriptor descriptor, String value) {
+        this.descriptorAssociationPK = new DocumentDescriptorAssociationPK(document.getId(), descriptor.getId());
+        this.document = document;
+        this.descriptor = descriptor;
+        this.value = value;
+    }
+
+    public DocumentDescriptorAssociationPK getDescriptorAssociationPK() {
+        return descriptorAssociationPK;
+    }
+
+    public void setDescriptorAssociationPK(DocumentDescriptorAssociationPK descriptorAssociationPK) {
+        this.descriptorAssociationPK = descriptorAssociationPK;
+    }
 
     public Document getDocument() {
         return document;
@@ -45,15 +77,16 @@ public class DocumentDescriptorAssociation implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DocumentDescriptorAssociation that = (DocumentDescriptorAssociation) o;
-
-        if (document != null ? !document.equals(that.document) : that.document != null) return false;
-        return descriptor != null ? descriptor.equals(that.descriptor) : that.descriptor == null;
-
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof DocumentDescriptorAssociation)) {
+            return false;
+        }
+        DocumentDescriptorAssociation other = (DocumentDescriptorAssociation) object;
+        if ((this.descriptorAssociationPK == null && other.descriptorAssociationPK != null) || (this.descriptorAssociationPK != null && !this.descriptorAssociationPK.equals(other.descriptorAssociationPK))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -65,9 +98,10 @@ public class DocumentDescriptorAssociation implements Serializable {
 
     @Override
     public String toString() {
-        return "DocumentDescriptorAssociation{" +
-                ", descriptor=" + descriptor +
-                ", value='" + value + '\'' +
-                '}';
+        return "DocumentDescriptorAssociation{"
+                + ", descriptor=" + descriptor
+                + ", value='" + value + '\''
+                + '}';
     }
+
 }

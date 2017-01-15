@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.ac.bg.fon.silab.dms.rest.services.process.dto;
+package rs.ac.bg.fon.silab.dms.rest.services.tree.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
