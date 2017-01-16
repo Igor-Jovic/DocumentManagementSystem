@@ -10,7 +10,7 @@ public class AuthenticationData {
     private String token;
 
 
-    public AuthenticationData(String token, Authentication authentication, LocalDateTime authenticationTime) {
+    AuthenticationData(String token, Authentication authentication, LocalDateTime authenticationTime) {
         this.authentication = authentication;
         this.authenticationTime = authenticationTime;
         this.token = token;
@@ -24,7 +24,7 @@ public class AuthenticationData {
         return authentication;
     }
 
-    public LocalDateTime getAuthenticationTime() {
+    LocalDateTime getAuthenticationTime() {
         return authenticationTime;
     }
 
