@@ -49,7 +49,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return result;
     }
 
-    private void validatePassword(String provided, String expected) {
+    void validatePassword(String provided, String expected) {
         if (!encoder.matches((CharSequence) provided, expected)) {
             throw new UnknownUserException("Wrong username or password.");
         }
