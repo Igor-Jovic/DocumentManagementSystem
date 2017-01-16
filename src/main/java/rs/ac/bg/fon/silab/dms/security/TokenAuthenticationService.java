@@ -11,7 +11,7 @@ import java.util.UUID;
 public class TokenAuthenticationService {
 
     @Value("#{'${auth.token.timeToLive}'}")
-    private int tokenLifeInMinutes;
+    int tokenLifeInMinutes;
 
     private static TokenAuthenticationService instance = new TokenAuthenticationService();
     private Map<String, AuthenticationData> cachedAuthenticationData;
@@ -57,5 +57,9 @@ public class TokenAuthenticationService {
             return false;
         }
         return true;
+    }
+
+    public int getCurrentNumberOfUsers() {
+        return cachedAuthenticationData.size();
     }
 }
