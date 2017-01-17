@@ -10,10 +10,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rs.ac.bg.fon.silab.dms.core.model.CompanyProcess;
+import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.service.ProcessService;
+import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
 import rs.ac.bg.fon.silab.dms.rest.services.tree.dto.TreeResponse;
 
@@ -28,10 +31,15 @@ public class TreeRestService {
     @Autowired
     private ProcessService processService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
-    public ResponseEntity getAll() {
-        List<CompanyProcess> companyProcesses = processService.getAllMainProcesses(); // should get Main Processes by company param 
+    public ResponseEntity getAll(@RequestHeader("X-Authorization") String token) {
+        User authenticatedUser = userService.getAuthenticatedUser(token);
         
+        List<CompanyProcess> companyProcesses = processService.getAllMainProcessesForCompany(authenticatedUser.getCompany().getId());
+
         List<TreeResponse> treeResponses = companyProcesses.stream()
                 .map(e -> new TreeResponse(e))
                 .collect(Collectors.toList());

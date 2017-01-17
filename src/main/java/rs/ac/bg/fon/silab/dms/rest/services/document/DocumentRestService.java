@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 import rs.ac.bg.fon.silab.dms.core.model.Document;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
+import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentService;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
+import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentDescriptorRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentRequest;
@@ -42,36 +46,55 @@ public class DocumentRestService {
     @Autowired
     private DocumentTypeService documentTypeService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping
-    public ResponseEntity create(@RequestBody DocumentRequest documentRequest) throws BadRequestException {
-        Document document = documentService.createDocument(createDocumentFromRequest(documentRequest));
+    public ResponseEntity create(@RequestHeader("X-Authorization") String token, @RequestBody DocumentRequest documentRequest) throws BadRequestException {
+        User authenticatedUser = userService.getAuthenticatedUser(token);
+        
+        Document document = documentService.createDocument(createDocumentFromRequest(documentRequest, authenticatedUser.getCompany()));
         List<DocumentDescriptorAssociation> associations = createDescriptorsAssotiations(document, documentRequest);
         documentService.addDescriptors(associations);
         document.setDocumentDescriptorAssociationList(associations);
-        
+
         DocumentResponse documentResponse = new DocumentResponse(document);
         return ResponseEntity.ok(createSuccessResponse(documentResponse));
     }
 
     @GetMapping
-    public ResponseEntity getAll() {
-        List<Document> allDocuments = documentService.getAllDocument();
+    public ResponseEntity getAll(@RequestHeader("X-Authorization") String token) {
+        User authenticatedUser = userService.getAuthenticatedUser(token);
+        List<Document> documents = documentService.getAllDocumentsByCompanyId(authenticatedUser.getCompany().getId());
+//        List<Document> documents = authenticatedUser.getCompany().getDocumentTypes().stream()
+//                .flatMap(e -> e.getDocuments().stream())
+//                .collect(Collectors.toList());
 
-        List<DocumentResponse> documentResponses = DocumentResponse.getDocumentResponseList(allDocuments);
+        List<DocumentResponse> documentResponses = DocumentResponse.getDocumentResponseList(documents);
         return ResponseEntity.ok(createSuccessResponse(documentResponses));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity getOne(@PathVariable("id") Long id) throws BadRequestException {
+    public ResponseEntity getOne(@RequestHeader("X-Authorization") String token, @PathVariable("id") Long id) throws BadRequestException {
+        User authenticatedUser = userService.getAuthenticatedUser(token);
         Document document = documentService.getDocument(id);
+
+        if (!document.getDocumentType().getCompany().equals(authenticatedUser.getCompany())) {
+            throw new BadRequestException("Your company does not have specified document.");
+        }
 
         DocumentResponse documentResponse = new DocumentResponse(document);
         return ResponseEntity.ok(createSuccessResponse(documentResponse));
     }
 
-    private Document createDocumentFromRequest(DocumentRequest documentRequest) throws BadRequestException {
+    private Document createDocumentFromRequest(DocumentRequest documentRequest, Company company) throws BadRequestException {
         Document document = new Document();
         DocumentType documentType = documentTypeService.getDocumentType(documentRequest.getDocumentTypeId());
+        
+        if (company.equals(documentType.getCompany())) {
+            throw new BadRequestException("Your company does not have specified document type.");
+        }
+        
         document.setDocumentType(documentType);
 
         return document;
@@ -89,11 +112,11 @@ public class DocumentRestService {
         }
         List<DocumentDescriptorAssociation> associations = documentRequest.getDescriptorRequests().stream()
                 .map(e -> new DocumentDescriptorAssociation(
-                        document, document.getDocumentType().getDescriptors().stream()
+                                document, document.getDocumentType().getDescriptors().stream()
                                 .filter(d -> d.getId().equals(e.getDescriptorId()))
                                 .findFirst().get(), e.getValue())).collect(Collectors.toList());
         return associations;
-        
+
     }
 
 }

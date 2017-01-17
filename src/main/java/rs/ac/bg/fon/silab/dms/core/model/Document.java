@@ -6,6 +6,7 @@ import java.util.List;
 @Entity
 @Table(name = "document")
 public class Document {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -17,6 +18,10 @@ public class Document {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "document")
     private List<DocumentDescriptorAssociation> documentDescriptorAssociationList;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "COMPANY_ID")
+    private Company company;
 
     public Long getId() {
         return id;
@@ -40,5 +45,33 @@ public class Document {
 
     public void setDocumentDescriptorAssociationList(List<DocumentDescriptorAssociation> documentDescriptorAssociationList) {
         this.documentDescriptorAssociationList = documentDescriptorAssociationList;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Document document = (Document) o;
+
+        return id.equals(document.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

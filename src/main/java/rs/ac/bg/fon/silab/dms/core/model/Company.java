@@ -75,12 +75,18 @@ public class Company {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Company company = (Company) o;
 
-        if (!id.equals(company.id)) return false;
+        if (!id.equals(company.id)) {
+            return false;
+        }
         return name.equals(company.name);
     }
 
@@ -93,11 +99,12 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", processes=" + processes +
-                ", employees=" + employees +
-                '}';
+        return "Company{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", processes=" + processes
+                + ", employees=" + employees
+                + '}';
     }
+
 }

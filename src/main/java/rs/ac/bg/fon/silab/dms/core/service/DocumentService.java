@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
 import rs.ac.bg.fon.silab.dms.core.model.Document;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
-import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociationPK;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentDescriptorAssociationRepository;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentRepository;
 
@@ -28,21 +27,24 @@ public class DocumentService {
     @Autowired
     private DocumentDescriptorAssociationRepository descriptorAssociationRepository;
 
+    DocumentService(DocumentRepository documentRepository, DocumentDescriptorAssociationRepository descriptorAssociationRepository) {
+        this.documentRepository = documentRepository;
+        this.descriptorAssociationRepository = descriptorAssociationRepository;
+    }
+
     public Document createDocument(Document document) {
         return documentRepository.saveAndFlush(document);
     }
 
     public void addDescriptors(List<DocumentDescriptorAssociation> associations) {
         for (DocumentDescriptorAssociation descriptor : associations) {
-            System.out.println("#################");
-            System.out.println(descriptor.getDescriptorAssociationPK().toString());
-            System.out.println("#################");
-            descriptorAssociationRepository.saveAndFlush(descriptor);
+            descriptorAssociationRepository.save(descriptor);
         }
+        descriptorAssociationRepository.flush();
     }
 
-    public List<Document> getAllDocument() {
-        return documentRepository.findAll();
+    public List<Document> getAllDocumentsByCompanyId(Long companyId) {
+        return documentRepository.getAllDocumentByCompanyId(companyId);
     }
 
     public Document getDocument(Long id) throws BadRequestException {

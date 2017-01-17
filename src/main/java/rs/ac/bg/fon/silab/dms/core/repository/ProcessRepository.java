@@ -6,6 +6,6 @@ import rs.ac.bg.fon.silab.dms.core.model.CompanyProcess;
 
 public interface ProcessRepository extends JpaRepository<CompanyProcess, Long> {
 
-    List<CompanyProcess> findByParentProcess(Long parentProcess);
+    List<CompanyProcess> findByParentProcessAndCompany(Long parentProcess, Long company);
     
 }

@@ -9,6 +9,7 @@ import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
 import rs.ac.bg.fon.silab.dms.util.StringUtils;
 
 import static rs.ac.bg.fon.silab.dms.util.StringUtils.isStringEmptyOrNull;
@@ -25,6 +26,8 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
+    @Autowired
+    private TokenAuthenticationService tokenAuthenticationService;
 
     UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, CompanyService companyService) {
         this.encoder = bCryptPasswordEncoder;
@@ -56,10 +59,16 @@ public class UserService {
         }
     }
 
+    public User getAuthenticatedUser(String token) {
+        String authenticatedUserName = tokenAuthenticationService.getAuthenticationData(token)
+                .getAuthentication().getName();
+        User authenticatedUser = getUser(authenticatedUserName);
+        return authenticatedUser;
+    }
+
     public User getUser(String username) {
         return userRepository.findByUsername(username);
     }
-
 
     public void deleteUser(User existingUser) {
         userRepository.delete(existingUser.getId());

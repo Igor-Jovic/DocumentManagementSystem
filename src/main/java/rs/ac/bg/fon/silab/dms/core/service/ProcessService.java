@@ -26,6 +26,10 @@ public class ProcessService {
         return processRepository.saveAndFlush(process);
     }
 
+    ProcessService(ProcessRepository processRepository) {
+        this.processRepository = processRepository;
+    }
+
     public CompanyProcess getProcess(Long id) throws BadRequestException {
         CompanyProcess companyProcess = processRepository.findOne(id);
         if (companyProcess == null) {
@@ -34,8 +38,8 @@ public class ProcessService {
         return companyProcess;
     }
 
-    public List<CompanyProcess> getAllMainProcesses() {
-        List<CompanyProcess> companyProcesses = processRepository.findByParentProcess(null);
+    public List<CompanyProcess> getAllMainProcessesForCompany(Long companyId) {
+        List<CompanyProcess> companyProcesses = processRepository.findByParentProcessAndCompany(null, companyId);
         return companyProcesses;
     }
 

@@ -18,10 +18,17 @@ public class DocumentTypeService {
     @Autowired
     private DescriptorRepository descriptorRepository;
 
-    public DocumentType createDocumentType(DocumentType documentType) {
+    DocumentTypeService(DocumentTypeRepository documentRepository, DescriptorRepository descriptorRepository) {
+        this.documentRepository = documentRepository;
+        this.descriptorRepository = descriptorRepository;
+    }
+
+    public DocumentType createDocumentType(DocumentType documentType) throws BadRequestException {
+        validateDocumentType(documentType);
         for (Descriptor descriptor : documentType.getDescriptors()) {
-            descriptorRepository.saveAndFlush(descriptor);
+            descriptorRepository.save(descriptor);
         }
+        descriptorRepository.flush();
         return documentRepository.saveAndFlush(documentType);
     }
 
@@ -35,6 +42,12 @@ public class DocumentTypeService {
             throw new BadRequestException("Document type does not exists.");
         }
         return documentType;
+    }
+
+    public void validateDocumentType(DocumentType documentType) throws BadRequestException {
+        if (documentRepository.getByNameAndCompany(documentType.getName(), documentType.getCompany().getId()) != null) {
+            throw new BadRequestException("Document type with given name already exists.");
+        }
     }
 
 }
