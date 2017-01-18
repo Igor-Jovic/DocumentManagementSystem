@@ -23,6 +23,30 @@ public class Document {
     @JoinColumn(name = "COMPANY_ID")
     private Company company;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "INPUT_FOR_ACTIVITY")
+    private Activity inputForActivity;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "OUTPUT_FOR_ACTIVITY")
+    private Activity outputForActivity;
+
+    public Activity getInputForActivity() {
+        return inputForActivity;
+    }
+
+    public void setInputForActivity(Activity inputForActivity) {
+        this.inputForActivity = inputForActivity;
+    }
+
+    public Activity getOutputForActivity() {
+        return outputForActivity;
+    }
+
+    public void setOutputForActivity(Activity outputForActivity) {
+        this.outputForActivity = outputForActivity;
+    }
+
     public Long getId() {
         return id;
     }

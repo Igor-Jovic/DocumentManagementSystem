@@ -1,6 +1,7 @@
 package rs.ac.bg.fon.silab.dms.core.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
@@ -44,7 +45,7 @@ public class DocumentTypeService {
         return documentType;
     }
 
-    public void validateDocumentType(DocumentType documentType) throws BadRequestException {
+    void validateDocumentType(DocumentType documentType) throws BadRequestException {
         if (documentRepository.getByNameAndCompany(documentType.getName(), documentType.getCompany().getId()) != null) {
             throw new BadRequestException("Document type with given name already exists.");
         }

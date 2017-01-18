@@ -1,6 +1,8 @@
 package rs.ac.bg.fon.silab.dms.core.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "activity")
@@ -16,15 +18,50 @@ public class Activity {
 
     @OneToOne
     @JoinColumn(name = "INPUT_DOCUMENT_ID")
-    private Document inputDocument;
+    private DocumentType inputDocumentType;
 
     @OneToOne
     @JoinColumn(name = "OUTPUT_DOCUMENT_ID")
-    private Document outputDocument;
+    private DocumentType outputDocumentTypes;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PARENT_PROCESS_ID")
     private CompanyProcess parentProcess;
+
+    @OneToMany(mappedBy = "inputForActivity")
+    private List<Document> inputDocuments;
+
+    @OneToMany(mappedBy = "outputForActivity")
+    private List<Document> outputDocuments;
+
+    public Activity(DocumentType inputDocumentType, DocumentType outputDocumentTypes, CompanyProcess process, String name) {
+        this.name = name;
+        this.inputDocumentType = inputDocumentType;
+        this.outputDocumentTypes = outputDocumentTypes;
+        this.parentProcess = process;
+        inputDocuments = new ArrayList<>();
+        outputDocuments = new ArrayList<>();
+    }
+
+    public List<Document> getInputDocuments() {
+        return inputDocuments;
+    }
+
+    public void setInputDocuments(List<Document> inputDocuments) {
+        this.inputDocuments = inputDocuments;
+    }
+
+    public DocumentType getOutputDocumentTypes() {
+        return outputDocumentTypes;
+    }
+
+    public void setOutputDocumentTypes(DocumentType outputDocumentTypes) {
+        this.outputDocumentTypes = outputDocumentTypes;
+    }
+
+    public void setOutputDocuments(List<Document> outputDocuments) {
+        this.outputDocuments = outputDocuments;
+    }
 
     public Long getId() {
         return id;
@@ -42,20 +79,20 @@ public class Activity {
         this.name = name;
     }
 
-    public Document getInputDocument() {
-        return inputDocument;
+    public DocumentType getInputDocumentType() {
+        return inputDocumentType;
     }
 
-    public void setInputDocument(Document inputDocument) {
-        this.inputDocument = inputDocument;
+    public void setInputDocumentType(DocumentType inputDocumentType) {
+        this.inputDocumentType = inputDocumentType;
     }
 
-    public Document getOutputDocument() {
-        return outputDocument;
+    public DocumentType getOutputDocuments() {
+        return outputDocumentTypes;
     }
 
-    public void setOutputDocument(Document outputDocument) {
-        this.outputDocument = outputDocument;
+    public void setOutputDocuments(DocumentType outputDocuments) {
+        this.outputDocumentTypes = outputDocuments;
     }
 
     public CompanyProcess getParentProcess() {
