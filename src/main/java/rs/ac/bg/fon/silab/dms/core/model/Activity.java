@@ -34,6 +34,10 @@ public class Activity {
     @OneToMany(mappedBy = "outputForActivity")
     private List<Document> outputDocuments;
 
+
+    public Activity() {
+    }
+
     public Activity(DocumentType inputDocumentType, DocumentType outputDocumentTypes, CompanyProcess process, String name) {
         this.name = name;
         this.inputDocumentType = inputDocumentType;
@@ -41,6 +45,10 @@ public class Activity {
         this.parentProcess = process;
         inputDocuments = new ArrayList<>();
         outputDocuments = new ArrayList<>();
+    }
+
+    public DocumentType getOutputDocumentTypes() {
+        return outputDocumentTypes;
     }
 
     public List<Document> getInputDocuments() {
@@ -51,7 +59,7 @@ public class Activity {
         this.inputDocuments = inputDocuments;
     }
 
-    public DocumentType getOutputDocumentTypes() {
+    public DocumentType getOutputDocumentType() {
         return outputDocumentTypes;
     }
 

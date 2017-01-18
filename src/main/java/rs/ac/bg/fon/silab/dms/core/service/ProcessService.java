@@ -39,7 +39,7 @@ public class ProcessService {
     }
 
     public List<CompanyProcess> getAllMainProcessesForCompany(Long companyId) {
-        List<CompanyProcess> companyProcesses = processRepository.findByParentProcessAndCompany(null, companyId);
+        List<CompanyProcess> companyProcesses = processRepository.findByParentProcessAndCompanyId(null, companyId);
         return companyProcesses;
     }
 

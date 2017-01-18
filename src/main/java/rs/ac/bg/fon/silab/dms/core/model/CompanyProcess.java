@@ -22,7 +22,7 @@ public class CompanyProcess {
     private List<CompanyProcess> childProcesses;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "PARENT_ID")
+    @JoinColumn(name = "PARENT_ID", nullable = true)
     private CompanyProcess parentProcess;
 
     @ManyToOne(fetch = FetchType.EAGER)
