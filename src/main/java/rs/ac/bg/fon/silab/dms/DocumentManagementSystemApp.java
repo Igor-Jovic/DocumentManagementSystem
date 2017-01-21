@@ -46,6 +46,7 @@ public class DocumentManagementSystemApp {
 //                u.setRole(Role.ADMIN);
 //                userService.createUserWithNewCompany(u);
 
+                throw new RuntimeException("making the build fail for jenkins :) ");
             }
         };
     }
