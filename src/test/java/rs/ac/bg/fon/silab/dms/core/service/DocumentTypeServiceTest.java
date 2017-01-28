@@ -46,7 +46,7 @@ public class DocumentTypeServiceTest {
         DocumentType documentType = new DocumentType(name, adminCompany);
         DocumentTypeRepository documentRepositoryMock = mock(DocumentTypeRepository.class);
 
-        when(documentRepositoryMock.getByNameAndCompany(documentType.getName(), documentType.getCompany().getId())).thenReturn(documentType);
+        when(documentRepositoryMock.getByNameAndCompanyId(documentType.getName(), documentType.getCompany().getId())).thenReturn(documentType);
 
         DocumentTypeService testee = new DocumentTypeService(documentRepositoryMock, null);
 
@@ -63,7 +63,7 @@ public class DocumentTypeServiceTest {
         DocumentTypeRepository documentTypeRepositoryMock = mock(DocumentTypeRepository.class);
         DescriptorRepository descriptorRepositoryMock = mock(DescriptorRepository.class);
 
-        when(documentTypeRepositoryMock.getByNameAndCompany(documentType.getName(), documentType.getCompany().getId())).thenReturn(null);
+        when(documentTypeRepositoryMock.getByNameAndCompanyId(documentType.getName(), documentType.getCompany().getId())).thenReturn(null);
 
         DocumentTypeService testee = new DocumentTypeService(documentTypeRepositoryMock, descriptorRepositoryMock);
         testee.createDocumentType(documentType);
@@ -85,7 +85,7 @@ public class DocumentTypeServiceTest {
         DocumentTypeRepository documentTypeRepositoryMock = mock(DocumentTypeRepository.class);
         DescriptorRepository descriptorRepositoryMock = mock(DescriptorRepository.class);
 
-        when(documentTypeRepositoryMock.getByNameAndCompany(documentType.getName(), documentType.getCompany().getId()))
+        when(documentTypeRepositoryMock.getByNameAndCompanyId(documentType.getName(), documentType.getCompany().getId()))
                 .thenReturn(documentType);
 
         DocumentTypeService testee = new DocumentTypeService(documentTypeRepositoryMock, descriptorRepositoryMock);

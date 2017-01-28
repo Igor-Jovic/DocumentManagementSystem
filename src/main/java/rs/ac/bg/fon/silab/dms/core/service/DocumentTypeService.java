@@ -46,7 +46,7 @@ public class DocumentTypeService {
     }
 
     void validateDocumentType(DocumentType documentType) throws BadRequestException {
-        if (documentRepository.getByNameAndCompany(documentType.getName(), documentType.getCompany().getId()) != null) {
+        if (documentRepository.getByNameAndCompanyId(documentType.getName(), documentType.getCompany().getId()) != null) {
             throw new BadRequestException("Document type with given name already exists.");
         }
     }

@@ -6,8 +6,8 @@ import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 
 public interface DocumentTypeRepository extends JpaRepository<DocumentType, Long> {
     
-    List<DocumentType> getAllByCompany(Long companyId);
+    List<DocumentType> getAllByCompanyId(Long companyId);
     
-    DocumentType getByNameAndCompany(String name, Long companyId);
+    DocumentType getByNameAndCompanyId(String name, Long companyId);
     
 }

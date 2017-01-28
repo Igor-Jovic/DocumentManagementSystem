@@ -22,7 +22,7 @@ public class Company {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<User> employees;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<DocumentType> documentTypes;
 
     public Company() {
