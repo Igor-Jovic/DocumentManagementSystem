@@ -119,4 +119,9 @@ public class CompanyProcess {
                 ", activities=" + activities +
                 '}';
     }
+
+    boolean containsProcess(Long id) {
+        return this.id.equals(id) &&
+                (this.id.equals(id) || childProcesses.stream().anyMatch(companyProcess -> containsProcess(id)));
+    }
 }

@@ -107,4 +107,9 @@ public class Company {
                 + '}';
     }
 
+    public boolean hasProcess(Long id) {
+        return processes.stream()
+                .anyMatch(companyProcess -> companyProcess.containsProcess(id));
+    }
+
 }

@@ -19,12 +19,15 @@ import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.core.service.ProcessService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
+
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
+
 import rs.ac.bg.fon.silab.dms.rest.services.process.dto.ProcessRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.process.dto.ProcessResponse;
 
+import java.util.List;
+
 /**
- *
  * @author stefan
  */
 @RestController
@@ -43,7 +46,7 @@ public class ProcessRestService {
     @PostMapping
     public ResponseEntity create(@RequestHeader("X-Authorization") String token, @RequestBody ProcessRequest processRequest) throws BadRequestException {
         User authenticatedUser = userService.getAuthenticatedUser(token);
-        if (userInProccess(authenticatedUser, processRequest.getParentProcess())) {
+        if (!userInProccess(authenticatedUser, processRequest.getParentProcess())) {
             throw new BadRequestException("User in not authorized to create process with specified process parent.");
         }
         CompanyProcess companyProcess = processService.createProcess(createProcessFromRequest(processRequest, authenticatedUser.getCompany()));
@@ -53,7 +56,7 @@ public class ProcessRestService {
     }
 
     private boolean userInProccess(User user, Long process) {
-        return user.getCompany().getProcesses().stream().map(CompanyProcess::getId).anyMatch(e -> e.equals(process));
+        return user.getCompany().hasProcess(process);
     }
 
     private CompanyProcess createProcessFromRequest(ProcessRequest processRequest, Company company) throws BadRequestException {
