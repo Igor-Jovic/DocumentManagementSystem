@@ -7,12 +7,15 @@ package rs.ac.bg.fon.silab.dms.core.service;
 
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.Test;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
@@ -21,7 +24,6 @@ import rs.ac.bg.fon.silab.dms.core.repository.DescriptorRepository;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentTypeRepository;
 
 /**
- *
  * @author stefan
  */
 public class DocumentTypeServiceTest {

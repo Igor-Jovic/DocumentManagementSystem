@@ -13,7 +13,7 @@ public class ActivityService {
     @Autowired
     private ActivityRepository activityRepository;
 
-    public void setActivityRepository(ActivityRepository activityRepository) {
+    public ActivityService(ActivityRepository activityRepository) {
         this.activityRepository = activityRepository;
     }
 
