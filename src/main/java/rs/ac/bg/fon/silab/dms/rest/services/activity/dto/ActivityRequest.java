@@ -4,9 +4,7 @@ import rs.ac.bg.fon.silab.dms.util.StringUtils;
 
 import static rs.ac.bg.fon.silab.dms.util.StringUtils.*;
 
-/**
- * Created by igor on 1/18/17.
- */
+
 public class ActivityRequest {
     public long parentProcessId;
     public String name;
