@@ -16,7 +16,6 @@ import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.CompanyProcess;
 import rs.ac.bg.fon.silab.dms.core.model.User;
-import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.core.service.ProcessService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
 
@@ -25,7 +24,6 @@ import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessRespons
 import rs.ac.bg.fon.silab.dms.rest.services.process.dto.ProcessRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.process.dto.ProcessResponse;
 
-import java.util.List;
 
 /**
  * @author stefan
@@ -38,15 +36,12 @@ public class ProcessRestService {
     private ProcessService processService;
 
     @Autowired
-    private CompanyService companyService;
-
-    @Autowired
     private UserService userService;
 
     @PostMapping
     public ResponseEntity create(@RequestHeader("X-Authorization") String token, @RequestBody ProcessRequest processRequest) throws BadRequestException {
         User authenticatedUser = userService.getAuthenticatedUser(token);
-        if (!userInProccess(authenticatedUser, processRequest.getParentProcess())) {
+        if (processRequest.getParentProcess() != null && !userInProccess(authenticatedUser, processRequest.getParentProcess())) {
             throw new BadRequestException("User in not authorized to create process with specified process parent.");
         }
         CompanyProcess companyProcess = processService.createProcess(createProcessFromRequest(processRequest, authenticatedUser.getCompany()));
@@ -67,6 +62,11 @@ public class ProcessRestService {
             CompanyProcess parentProcess = processService.getProcess(processRequest.getParentProcess());
             if (parentProcess.isPrimitive()) {
                 throw new BadRequestException("You can create only activity from primitive process.");
+            }
+            if (parentProcess.getChildProcesses().stream().filter(e -> e.isPrimitive()).findAny().isPresent()) {
+                if (!processRequest.isPrimitive()) {
+                    throw new BadRequestException("Child process for this parent can be only primitive process.");
+                }
             }
             companyProcess.setParentProcess(parentProcess);
         }
