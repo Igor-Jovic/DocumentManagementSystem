@@ -11,15 +11,15 @@ package rs.ac.bg.fon.silab.dms.rest.services.document.dto;
  */
 public class DocumentDescriptorRequest {
     
-    private Long descriptorId;
+    private Long id;
     private String value;
 
-    public Long getDescriptorId() {
-        return descriptorId;
+    public Long getId() {
+        return id;
     }
 
-    public void setDescriptorId(Long descriptorId) {
-        this.descriptorId = descriptorId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getValue() {

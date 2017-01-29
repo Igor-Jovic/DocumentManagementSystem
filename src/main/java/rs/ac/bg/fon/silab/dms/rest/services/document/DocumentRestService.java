@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.model.Activity;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 import rs.ac.bg.fon.silab.dms.core.model.Document;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 import rs.ac.bg.fon.silab.dms.core.model.User;
+import rs.ac.bg.fon.silab.dms.core.service.ActivityService;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentService;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
@@ -42,6 +44,9 @@ public class DocumentRestService {
 
     @Autowired
     private DocumentService documentService;
+
+    @Autowired
+    private ActivityService activityService;
 
     @Autowired
     private DocumentTypeService documentTypeService;
@@ -89,13 +94,22 @@ public class DocumentRestService {
 
     private Document createDocumentFromRequest(DocumentRequest documentRequest, Company company) throws BadRequestException {
         Document document = new Document();
-        DocumentType documentType = documentTypeService.getDocumentType(documentRequest.getDocumentTypeId());
+        DocumentType documentType = documentTypeService.getDocumentType(documentRequest.getId());
         
-        if (company.equals(documentType.getCompany())) {
+        if (!company.equals(documentType.getCompany())) {
             throw new BadRequestException("Your company does not have specified document type.");
         }
         
         document.setDocumentType(documentType);
+        document.setCompany(company);
+        Activity activity = activityService.getActivity(documentRequest.getActivityId());
+        
+        // check if user can use activity
+        if (documentRequest.isInput()) {
+            document.setInputForActivity(activity);
+        } else {
+            document.setOutputForActivity(activity);
+        }
 
         return document;
     }
@@ -104,16 +118,16 @@ public class DocumentRestService {
         boolean validDescriptors = document.getDocumentType().getDescriptors().stream()
                 .map(Descriptor::getId)
                 .collect(Collectors.toList())
-                .containsAll(documentRequest.getDescriptorRequests().stream()
-                        .map(DocumentDescriptorRequest::getDescriptorId)
+                .containsAll(documentRequest.getDescriptors().stream()
+                        .map(DocumentDescriptorRequest::getId)
                         .collect(Collectors.toList()));
         if (!validDescriptors) {
             throw new BadRequestException("Invalid descriptors.");
         }
-        List<DocumentDescriptorAssociation> associations = documentRequest.getDescriptorRequests().stream()
+        List<DocumentDescriptorAssociation> associations = documentRequest.getDescriptors().stream()
                 .map(e -> new DocumentDescriptorAssociation(
                                 document, document.getDocumentType().getDescriptors().stream()
-                                .filter(d -> d.getId().equals(e.getDescriptorId()))
+                                .filter(d -> d.getId().equals(e.getId()))
                                 .findFirst().get(), e.getValue())).collect(Collectors.toList());
         return associations;
 

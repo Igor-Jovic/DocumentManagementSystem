@@ -13,23 +13,41 @@ import java.util.List;
  */
 public class DocumentRequest {
     
-    private Long documentTypeId;
-    private List<DocumentDescriptorRequest> descriptorRequests;
+    private Long id;
+    private List<DocumentDescriptorRequest> descriptors;
+    private boolean input;
+    private Long activityId;
 
-    public Long getDocumentTypeId() {
-        return documentTypeId;
+    public Long getId() {
+        return id;
     }
 
-    public void setDocumentTypeId(Long documentTypeId) {
-        this.documentTypeId = documentTypeId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public List<DocumentDescriptorRequest> getDescriptorRequests() {
-        return descriptorRequests;
+    public List<DocumentDescriptorRequest> getDescriptors() {
+        return descriptors;
     }
 
-    public void setDescriptorRequests(List<DocumentDescriptorRequest> descriptorRequests) {
-        this.descriptorRequests = descriptorRequests;
+    public void setDescriptors(List<DocumentDescriptorRequest> descriptors) {
+        this.descriptors = descriptors;
+    }
+
+    public boolean isInput() {
+        return input;
+    }
+
+    public void setInput(boolean input) {
+        this.input = input;
+    }
+
+    public Long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Long activityId) {
+        this.activityId = activityId;
     }
     
 }

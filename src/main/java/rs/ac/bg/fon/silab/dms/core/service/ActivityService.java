@@ -1,8 +1,8 @@
 package rs.ac.bg.fon.silab.dms.core.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
 import rs.ac.bg.fon.silab.dms.core.model.Activity;
 import rs.ac.bg.fon.silab.dms.core.repository.ActivityRepository;
 import rs.ac.bg.fon.silab.dms.util.StringUtils;
@@ -20,6 +20,14 @@ public class ActivityService {
     public Activity createActivity(Activity activity) {
         validateActivity(activity);
         return activityRepository.saveAndFlush(activity);
+    }
+
+    public Activity getActivity(Long id) throws BadRequestException {
+        Activity activity = activityRepository.findOne(id);
+        if (activity == null) {
+            throw new BadRequestException("Activity does not exists.");
+        }
+        return activity;
     }
 
     private void validateActivity(Activity activity) {
