@@ -5,8 +5,9 @@
  */
 package rs.ac.bg.fon.silab.dms.rest.services.document;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +58,7 @@ public class DocumentRestService {
     @PostMapping
     public ResponseEntity create(@RequestHeader("X-Authorization") String token, @RequestBody DocumentRequest documentRequest) throws BadRequestException {
         User authenticatedUser = userService.getAuthenticatedUser(token);
-        
+
         Document document = documentService.createDocument(createDocumentFromRequest(documentRequest, authenticatedUser.getCompany()));
         List<DocumentDescriptorAssociation> associations = createDescriptorsAssotiations(document, documentRequest);
         documentService.addDescriptors(associations);
@@ -79,6 +80,21 @@ public class DocumentRestService {
         return ResponseEntity.ok(createSuccessResponse(documentResponses));
     }
 
+    @GetMapping(value = "/activities/{activityId}")
+    public ResponseEntity getAllForActivity(@RequestHeader("X-Authorization") String token, @PathVariable("activityId") Long activityId) {
+        User authenticatedUser = userService.getAuthenticatedUser(token);
+        
+
+        List<Document> allInputDocumentsForActivity = documentService.getAllInputDocumentsForActivity(activityId);
+        List<Document> allOutputDocumentsForActivity = documentService.getAllOutputDocumentsForActivity(activityId);
+
+                
+        Map response = new HashMap();
+        response.put("inputs", DocumentResponse.getDocumentResponseList(allInputDocumentsForActivity));
+        response.put("outputs", DocumentResponse.getDocumentResponseList(allOutputDocumentsForActivity));
+        return ResponseEntity.ok(createSuccessResponse(response));
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity getOne(@RequestHeader("X-Authorization") String token, @PathVariable("id") Long id) throws BadRequestException {
         User authenticatedUser = userService.getAuthenticatedUser(token);
@@ -95,15 +111,15 @@ public class DocumentRestService {
     private Document createDocumentFromRequest(DocumentRequest documentRequest, Company company) throws BadRequestException {
         Document document = new Document();
         DocumentType documentType = documentTypeService.getDocumentType(documentRequest.getId());
-        
+
         if (!company.equals(documentType.getCompany())) {
             throw new BadRequestException("Your company does not have specified document type.");
         }
-        
+
         document.setDocumentType(documentType);
         document.setCompany(company);
         Activity activity = activityService.getActivity(documentRequest.getActivityId());
-        
+
         // check if user can use activity
         if (documentRequest.isInput()) {
             document.setInputForActivity(activity);

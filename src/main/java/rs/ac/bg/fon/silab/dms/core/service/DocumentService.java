@@ -47,6 +47,14 @@ public class DocumentService {
         return documentRepository.getAllDocumentByCompanyId(companyId);
     }
 
+    public List<Document> getAllInputDocumentsForActivity(Long activityId) {
+        return documentRepository.getAllDocumentByInputForActivityId(activityId);
+    }
+
+    public List<Document> getAllOutputDocumentsForActivity(Long activityId) {
+        return documentRepository.getAllDocumentByOutputForActivityId(activityId);
+    }
+
     public Document getDocument(Long id) throws BadRequestException {
         Document document = documentRepository.findOne(id);
         if (document == null) {

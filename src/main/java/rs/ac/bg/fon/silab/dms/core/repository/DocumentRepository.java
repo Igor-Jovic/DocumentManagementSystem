@@ -15,4 +15,6 @@ import rs.ac.bg.fon.silab.dms.core.model.Document;
  */
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> getAllDocumentByCompanyId(Long companyId);
+    List<Document> getAllDocumentByInputForActivityId(Long activityId);
+    List<Document> getAllDocumentByOutputForActivityId(Long activityId);
 }
