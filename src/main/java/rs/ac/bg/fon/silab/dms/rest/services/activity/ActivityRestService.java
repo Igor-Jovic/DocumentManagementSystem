@@ -35,6 +35,9 @@ public class ActivityRestService {
         if (!activityRequest.isValid()) {
             throw new BadRequestException("Activity must have name, parent process, input and output document");
         }
+        if (activityService.checkIfExists(activityRequest.name, activityRequest.parentProcessId)) {
+            throw new BadRequestException("Activity already exists");
+        }
         Activity activity = activityRequestToActivity(activityRequest);
         activityService.createActivity(activity);
         return ResponseEntity.ok(ApiResponse.createSuccessResponse(activityToActivityResponse(activity)));

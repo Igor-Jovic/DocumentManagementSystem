@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import rs.ac.bg.fon.silab.dms.core.model.Activity;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
+    Activity findByNameAndParentProcessId(String name, Long parentProcessId);
 }

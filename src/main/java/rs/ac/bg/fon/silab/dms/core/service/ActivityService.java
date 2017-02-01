@@ -38,4 +38,9 @@ public class ActivityService {
             throw new IllegalStateException("Activity is in a bad state.");
         }
     }
+
+    public boolean checkIfExists(String name, Long processId) throws BadRequestException {
+        return activityRepository.findByNameAndParentProcessId(name, processId) != null;
+    }
+
 }
