@@ -46,7 +46,7 @@ public class LoginRestService extends AuthenticationRestService {
         AuthenticationData authenticationData = tokenAuthenticationService.getAuthenticationData(token);
         //TODO: Remove after implementation of token persistance.
         if (authenticationData == null) {
-            throw new BadRequestException("Your token is invalid because of server restart.");
+            throw new BadRequestException("Your session has expired, please log in.");
         }
         LoginResponse loginResponse = authenticationDataToLoginResponse(authenticationData);
         return (ResponseEntity) ResponseEntity.ok(createSuccessResponse(loginResponse));

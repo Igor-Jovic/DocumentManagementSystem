@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +31,15 @@ import rs.ac.bg.fon.silab.dms.core.service.ActivityService;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentService;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
+
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
+import static rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse.*;
+
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentDescriptorRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse;
 
 /**
- *
  * @author stefan
  */
 @RestController
@@ -76,22 +79,22 @@ public class DocumentRestService {
 //                .flatMap(e -> e.getDocuments().stream())
 //                .collect(Collectors.toList());
 
-        List<DocumentResponse> documentResponses = DocumentResponse.getDocumentResponseList(documents);
+        List<DocumentResponse> documentResponses = getDocumentResponseList(documents);
         return ResponseEntity.ok(createSuccessResponse(documentResponses));
     }
 
     @GetMapping(value = "/activities/{activityId}")
     public ResponseEntity getAllForActivity(@RequestHeader("X-Authorization") String token, @PathVariable("activityId") Long activityId) {
         User authenticatedUser = userService.getAuthenticatedUser(token);
-        
+
 
         List<Document> allInputDocumentsForActivity = documentService.getAllInputDocumentsForActivity(activityId);
         List<Document> allOutputDocumentsForActivity = documentService.getAllOutputDocumentsForActivity(activityId);
 
-                
+
         Map response = new HashMap();
-        response.put("inputs", DocumentResponse.getDocumentResponseList(allInputDocumentsForActivity));
-        response.put("outputs", DocumentResponse.getDocumentResponseList(allOutputDocumentsForActivity));
+        response.put("inputs", getDocumentResponseList(allInputDocumentsForActivity));
+        response.put("outputs", getDocumentResponseList(allOutputDocumentsForActivity));
         return ResponseEntity.ok(createSuccessResponse(response));
     }
 
@@ -142,9 +145,9 @@ public class DocumentRestService {
         }
         List<DocumentDescriptorAssociation> associations = documentRequest.getDescriptors().stream()
                 .map(e -> new DocumentDescriptorAssociation(
-                                document, document.getDocumentType().getDescriptors().stream()
-                                .filter(d -> d.getId().equals(e.getId()))
-                                .findFirst().get(), e.getValue())).collect(Collectors.toList());
+                        document, document.getDocumentType().getDescriptors().stream()
+                        .filter(d -> d.getId().equals(e.getId()))
+                        .findFirst().get(), e.getValue())).collect(Collectors.toList());
         return associations;
 
     }

@@ -7,18 +7,19 @@ package rs.ac.bg.fon.silab.dms.rest.services.document.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import rs.ac.bg.fon.silab.dms.core.model.Document;
 
 /**
- *
  * @author stefan
  */
 public class DocumentResponse {
 
+    private String description;
     private Long id;
     private String name;
     private Long documentTypeId;
-    private List<DocumentDescriptorResponse> documentDescriptor;
+    private List<DocumentDescriptorResponse> documentDescriptors;
 
     public DocumentResponse() {
     }
@@ -27,9 +28,12 @@ public class DocumentResponse {
         this.id = document.getId();
         this.name = document.getDocumentType().getName();
         this.documentTypeId = document.getDocumentType().getId();
-        this.documentDescriptor = document.getDocumentDescriptorAssociationList().stream()
-                .map(e -> new DocumentDescriptorResponse(e))
+        this.documentDescriptors = document.getDocumentDescriptorAssociationList().stream()
+                .map(DocumentDescriptorResponse::new)
                 .collect(Collectors.toList());
+        this.description = document.getDocumentDescriptorAssociationList().stream()
+                .map(documentDescriptorAssociation -> String.format("%s : %s", documentDescriptorAssociation.getDescriptor().getName(), documentDescriptorAssociation.getValue()))
+                .collect(Collectors.joining(", "));
     }
 
     public Long getId() {
@@ -56,17 +60,25 @@ public class DocumentResponse {
         this.documentTypeId = documentTypeId;
     }
 
-    public List<DocumentDescriptorResponse> getDocumentDescriptor() {
-        return documentDescriptor;
+    public List<DocumentDescriptorResponse> getDocumentDescriptors() {
+        return documentDescriptors;
     }
 
-    public void setDocumentDescriptor(List<DocumentDescriptorResponse> documentDescriptor) {
-        this.documentDescriptor = documentDescriptor;
+    public void setDocumentDescriptors(List<DocumentDescriptorResponse> documentDescriptors) {
+        this.documentDescriptors = documentDescriptors;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public static List<DocumentResponse> getDocumentResponseList(List<Document> documents) {
         return documents.stream()
-                .map(e -> new DocumentResponse(e))
+                .map(DocumentResponse::new)
                 .collect(Collectors.toList());
     }
 
