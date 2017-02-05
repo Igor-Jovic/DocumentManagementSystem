@@ -10,9 +10,6 @@ import java.util.stream.Collectors;
 
 import rs.ac.bg.fon.silab.dms.core.model.CompanyProcess;
 
-/**
- * @author stefan
- */
 public class TreeResponse {
 
     private Long id;
@@ -30,12 +27,12 @@ public class TreeResponse {
         this.isPrimitive = companyProcess.isPrimitive();
         if (companyProcess.getChildProcesses() != null) {
             this.childProcesses = companyProcess.getChildProcesses().stream()
-                    .map(e -> new TreeResponse(e))
+                    .map(TreeResponse::new)
                     .collect(Collectors.toList());
         }
         if (companyProcess.getActivities() != null) {
             this.activities = companyProcess.getActivities().stream()
-                    .map(e -> new ActivityTreeResponse(e))
+                    .map(ActivityTreeResponse::new)
                     .collect(Collectors.toList());
         }
     }

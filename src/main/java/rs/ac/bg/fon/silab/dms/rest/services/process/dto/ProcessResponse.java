@@ -7,12 +7,8 @@ package rs.ac.bg.fon.silab.dms.rest.services.process.dto;
 
 import rs.ac.bg.fon.silab.dms.core.model.CompanyProcess;
 
-/**
- *
- * @author stefan
- */
 public class ProcessResponse {
-    
+
     private Long id;
     private String name;
     private boolean isPrimitive;
@@ -25,7 +21,7 @@ public class ProcessResponse {
         this.name = process.getName();
         this.isPrimitive = process.isPrimitive();
     }
-    
+
     public Long getId() {
         return id;
     }

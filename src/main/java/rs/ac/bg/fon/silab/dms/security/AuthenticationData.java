@@ -5,9 +5,9 @@ import org.springframework.security.core.Authentication;
 import java.time.LocalDateTime;
 
 public class AuthenticationData {
-    private Authentication authentication;
-    private LocalDateTime authenticationTime;
-    private String token;
+    private final Authentication authentication;
+    private final LocalDateTime authenticationTime;
+    private final String token;
 
 
     AuthenticationData(String token, Authentication authentication, LocalDateTime authenticationTime) {

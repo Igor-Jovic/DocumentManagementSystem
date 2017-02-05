@@ -15,9 +15,9 @@ import rs.ac.bg.fon.silab.dms.security.exception.UnknownUserException;
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    private UserService userService;
+    private final UserService userService;
 
-    private BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
 
     @Autowired
     public CustomAuthenticationProvider(UserService userService, BCryptPasswordEncoder encoder) {
@@ -34,9 +34,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new UnknownUserException("Could not find user with username: " + username);
         }
         validatePassword((String) authentication.getCredentials(), user.getPassword());
-        Authentication auth = new UsernamePasswordAuthenticationToken(
+        return new UsernamePasswordAuthenticationToken(
                 user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getRole().toString()));
-        return auth;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     }
 
     void validatePassword(String provided, String expected) {
-        if (!encoder.matches((CharSequence) provided, expected)) {
+        if (!encoder.matches(provided, expected)) {
             throw new UnknownUserException("Wrong username or password.");
         }
     }

@@ -2,7 +2,7 @@ package rs.ac.bg.fon.silab.dms.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.repository.CompanyRepository;
 
@@ -16,9 +16,9 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    Company createCompany(Company company) throws BadRequestException {
+    Company createCompany(Company company) throws DMSErrorException {
         if (companyRepository.findByName(company.getName()) != null) {
-            throw new BadRequestException("Company with given name already exists.");
+            throw new DMSErrorException("Company with given name already exists.");
         }
         return companyRepository.saveAndFlush(company);
     }

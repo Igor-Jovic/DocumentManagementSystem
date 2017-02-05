@@ -1,7 +1,7 @@
 package rs.ac.bg.fon.silab.dms.rest.services.authentication;
 
 
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
@@ -12,7 +12,7 @@ import rs.ac.bg.fon.silab.dms.security.AuthenticationData;
 
 public class AuthenticationMapper {
 
-    public static User registrationRequestToUser(RegistrationRequest registrationRequest) throws BadRequestException {
+    public static User registrationRequestToUser(RegistrationRequest registrationRequest) throws DMSErrorException {
         return new User(registrationRequest.username, registrationRequest.password, Role.ADMIN, new Company(registrationRequest.companyName));
     }
 

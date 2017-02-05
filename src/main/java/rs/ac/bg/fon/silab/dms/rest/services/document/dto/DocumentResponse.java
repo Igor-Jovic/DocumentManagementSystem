@@ -5,14 +5,11 @@
  */
 package rs.ac.bg.fon.silab.dms.rest.services.document.dto;
 
+import rs.ac.bg.fon.silab.dms.core.model.Document;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
-import rs.ac.bg.fon.silab.dms.core.model.Document;
-
-/**
- * @author stefan
- */
 public class DocumentResponse {
 
     private String description;

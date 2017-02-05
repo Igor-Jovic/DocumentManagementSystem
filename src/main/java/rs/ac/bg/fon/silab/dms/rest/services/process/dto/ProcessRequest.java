@@ -5,12 +5,8 @@
  */
 package rs.ac.bg.fon.silab.dms.rest.services.process.dto;
 
-/**
- *
- * @author stefan
- */
 public class ProcessRequest {
-    
+
     private String name;
     private boolean primitive;
     private Long parentProcess;
@@ -38,5 +34,5 @@ public class ProcessRequest {
     public void setParentProcess(Long parentProcess) {
         this.parentProcess = parentProcess;
     }
-    
+
 }

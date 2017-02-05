@@ -7,24 +7,16 @@ package rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto;
 
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 
+class DescriptorResponse {
 
-/**
- *
- * @author stefan
- */
-public class DescriptorResponse {
-    
     private Long id;
     private String name;
 
-    public DescriptorResponse() {
-    }
-
-    public DescriptorResponse(Descriptor descriptor) {
+    DescriptorResponse(Descriptor descriptor) {
         this.id = descriptor.getId();
         this.name = descriptor.getName();
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -40,5 +32,5 @@ public class DescriptorResponse {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 }

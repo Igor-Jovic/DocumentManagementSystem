@@ -9,8 +9,7 @@ import rs.ac.bg.fon.silab.dms.rest.services.users.dto.UserResponse;
 class UsersMapper {
 
     static User userRequestToUser(UserRequest userRequest, Company company) {
-        User user = new User(userRequest.username, userRequest.password, Role.valueOf(userRequest.role.toUpperCase()), company);
-        return user;
+        return new User(userRequest.username, userRequest.password, Role.valueOf(userRequest.role.toUpperCase()), company);
     }
 
     static UserResponse userToUserResponse(User user) {

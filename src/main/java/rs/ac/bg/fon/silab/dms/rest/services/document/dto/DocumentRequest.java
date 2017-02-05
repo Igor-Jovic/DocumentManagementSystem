@@ -7,12 +7,8 @@ package rs.ac.bg.fon.silab.dms.rest.services.document.dto;
 
 import java.util.List;
 
-/**
- *
- * @author stefan
- */
 public class DocumentRequest {
-    
+
     private Long id;
     private List<DocumentDescriptorRequest> descriptors;
     private boolean input;
@@ -49,5 +45,5 @@ public class DocumentRequest {
     public void setActivityId(Long activityId) {
         this.activityId = activityId;
     }
-    
+
 }

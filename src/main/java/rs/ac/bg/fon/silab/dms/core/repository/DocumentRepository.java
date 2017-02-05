@@ -6,15 +6,15 @@
 package rs.ac.bg.fon.silab.dms.core.repository;
 
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import rs.ac.bg.fon.silab.dms.core.model.Document;
 
-/**
- *
- * @author stefan
- */
+
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> getAllDocumentByCompanyId(Long companyId);
+
     List<Document> getAllDocumentByInputForActivityId(Long activityId);
+
     List<Document> getAllDocumentByOutputForActivityId(Long activityId);
 }

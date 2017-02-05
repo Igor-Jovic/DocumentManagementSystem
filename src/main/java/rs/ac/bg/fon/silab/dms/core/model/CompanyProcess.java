@@ -22,7 +22,7 @@ public class CompanyProcess {
     private List<CompanyProcess> childProcesses;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "PARENT_ID", nullable = true)
+    @JoinColumn(name = "PARENT_ID")
     private CompanyProcess parentProcess;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -95,8 +95,7 @@ public class CompanyProcess {
 
         CompanyProcess process = (CompanyProcess) o;
 
-        if (!id.equals(process.id)) return false;
-        return company.equals(process.company);
+        return id.equals(process.id) && company.equals(process.company);
 
     }
 

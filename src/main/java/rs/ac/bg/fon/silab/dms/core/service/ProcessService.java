@@ -5,17 +5,14 @@
  */
 package rs.ac.bg.fon.silab.dms.core.service;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.CompanyProcess;
 import rs.ac.bg.fon.silab.dms.core.repository.ProcessRepository;
 
-/**
- *
- * @author stefan
- */
+import java.util.List;
+
 @Service
 public class ProcessService {
 
@@ -30,17 +27,16 @@ public class ProcessService {
         this.processRepository = processRepository;
     }
 
-    public CompanyProcess getProcess(Long id) throws BadRequestException {
+    public CompanyProcess getProcess(Long id) throws DMSErrorException {
         CompanyProcess companyProcess = processRepository.findOne(id);
         if (companyProcess == null) {
-            throw new BadRequestException("Process does not exists.");
+            throw new DMSErrorException("Process does not exists.");
         }
         return companyProcess;
     }
 
     public List<CompanyProcess> getAllMainProcessesForCompany(Long companyId) {
-        List<CompanyProcess> companyProcesses = processRepository.findByParentProcessAndCompanyId(null, companyId);
-        return companyProcesses;
+        return processRepository.findByParentProcessAndCompanyId(null, companyId);
     }
 
 }

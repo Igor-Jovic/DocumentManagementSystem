@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationRestService;
@@ -24,15 +24,15 @@ public class RegistrationRestService extends AuthenticationRestService {
     }
 
     @PostMapping(value = "/registration")
-    public ResponseEntity register(@RequestBody RegistrationRequest registrationRequest) throws BadRequestException {
+    public ResponseEntity register(@RequestBody RegistrationRequest registrationRequest) throws DMSErrorException {
         validateRequest(registrationRequest);
         User user = userService.createUserWithNewCompany(registrationRequestToUser(registrationRequest));
         return (ResponseEntity) ResponseEntity.ok(createSuccessResponse(userToRegistrationResponse(user)));
     }
 
-    private void validateRequest(RegistrationRequest registrationRequest) throws BadRequestException {
+    private void validateRequest(RegistrationRequest registrationRequest) throws DMSErrorException {
         if (!registrationRequest.isValid()) {
-            throw new BadRequestException("In order to register you need to provide company name, username and password.");
+            throw new DMSErrorException("In order to register you need to provide company name, username and password.");
         }
     }
 

@@ -83,7 +83,8 @@ public class DocumentDescriptorAssociation implements Serializable {
             return false;
         }
         DocumentDescriptorAssociation other = (DocumentDescriptorAssociation) object;
-        if ((this.descriptorAssociationPK == null && other.descriptorAssociationPK != null) || (this.descriptorAssociationPK != null && !this.descriptorAssociationPK.equals(other.descriptorAssociationPK))) {
+        if ((this.descriptorAssociationPK == null && other.descriptorAssociationPK != null)
+                || (this.descriptorAssociationPK != null && !this.descriptorAssociationPK.equals(other.descriptorAssociationPK))) {
             return false;
         }
         return true;

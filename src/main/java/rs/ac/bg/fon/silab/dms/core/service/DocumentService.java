@@ -5,19 +5,16 @@
  */
 package rs.ac.bg.fon.silab.dms.core.service;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Document;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentDescriptorAssociationRepository;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentRepository;
 
-/**
- *
- * @author stefan
- */
+import java.util.List;
+
 @Service
 public class DocumentService {
 
@@ -55,10 +52,10 @@ public class DocumentService {
         return documentRepository.getAllDocumentByOutputForActivityId(activityId);
     }
 
-    public Document getDocument(Long id) throws BadRequestException {
+    public Document getDocument(Long id) throws DMSErrorException {
         Document document = documentRepository.findOne(id);
         if (document == null) {
-            throw new BadRequestException("Document does not exists.");
+            throw new DMSErrorException("Document does not exists.");
         }
         return document;
     }

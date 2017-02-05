@@ -11,10 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
-/**
- *
- * @author stefan
- */
 @Embeddable
 public class DocumentDescriptorAssociationPK implements Serializable {
 
@@ -69,15 +65,12 @@ public class DocumentDescriptorAssociationPK implements Serializable {
         if (this.document != other.document) {
             return false;
         }
-        if (this.descriptor != other.descriptor) {
-            return false;
-        }
-        return true;
+        return this.descriptor == other.descriptor;
     }
 
     @Override
     public String toString() {
         return "DocumentDescriptorAssociationPK{" + "document=" + document + ", descriptor=" + descriptor + '}';
     }
-    
+
 }

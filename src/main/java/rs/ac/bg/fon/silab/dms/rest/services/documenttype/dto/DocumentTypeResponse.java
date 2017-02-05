@@ -7,29 +7,23 @@ package rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 
-/**
- *
- * @author stefan
- */
 public class DocumentTypeResponse {
-    
+
     private Long id;
     private String name;
     private List<DescriptorResponse> descriptors;
-
-    public DocumentTypeResponse() {
-    }
 
     public DocumentTypeResponse(DocumentType documentType) {
         this.id = documentType.getId();
         this.name = documentType.getName();
         this.descriptors = documentType.getDescriptors().stream()
-                .map(e -> new DescriptorResponse(e))
+                .map(DescriptorResponse::new)
                 .collect(Collectors.toList());
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -45,10 +39,10 @@ public class DocumentTypeResponse {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public static List<DocumentTypeResponse> getDocumentTypeResponseList(List<DocumentType> documentTypes) {
         return documentTypes.stream()
-                .map(e -> new DocumentTypeResponse(e))
+                .map(DocumentTypeResponse::new)
                 .collect(Collectors.toList());
     }
 
@@ -59,5 +53,5 @@ public class DocumentTypeResponse {
     public void setDescriptors(List<DescriptorResponse> descriptors) {
         this.descriptors = descriptors;
     }
-    
+
 }

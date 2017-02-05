@@ -1,7 +1,10 @@
 package rs.ac.bg.fon.silab.dms.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import rs.ac.bg.fon.silab.dms.core.model.User;
+import rs.ac.bg.fon.silab.dms.core.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -13,8 +16,11 @@ public class TokenAuthenticationService {
     @Value("#{'${auth.token.timeToLive}'}")
     int tokenLifeInMinutes;
 
-    private static TokenAuthenticationService instance = new TokenAuthenticationService();
-    private Map<String, AuthenticationData> cachedAuthenticationData;
+    @Autowired
+    private UserService userService;
+
+    private static final TokenAuthenticationService instance = new TokenAuthenticationService();
+    private final Map<String, AuthenticationData> cachedAuthenticationData;
 
     private TokenAuthenticationService() {
         cachedAuthenticationData = new HashMap<>();
@@ -53,13 +59,16 @@ public class TokenAuthenticationService {
 
     private boolean authenticationDataIsValid(AuthenticationData authenticationData) {
         LocalDateTime authenticationTime = authenticationData.getAuthenticationTime();
-        if (authenticationTime.plusMinutes(tokenLifeInMinutes).isBefore(LocalDateTime.now())) {
-            return false;
-        }
-        return true;
+        return !authenticationTime.plusMinutes(tokenLifeInMinutes).isBefore(LocalDateTime.now());
     }
 
     public int getCurrentNumberOfUsers() {
         return cachedAuthenticationData.size();
+    }
+
+    public User getAuthenticatedUser(String token) {
+        String authenticatedUserName = getAuthenticationData(token)
+                .getAuthentication().getName();
+        return userService.getUser(authenticatedUserName);
     }
 }

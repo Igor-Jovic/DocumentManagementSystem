@@ -7,10 +7,7 @@ package rs.ac.bg.fon.silab.dms.rest.services.document.dto;
 
 import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
 
-/**
- * @author stefan
- */
-public class DocumentDescriptorResponse implements Comparable {
+class DocumentDescriptorResponse implements Comparable {
 
     private String descriptor;
     private String value;
@@ -18,7 +15,7 @@ public class DocumentDescriptorResponse implements Comparable {
     public DocumentDescriptorResponse() {
     }
 
-    public DocumentDescriptorResponse(DocumentDescriptorAssociation association) {
+    DocumentDescriptorResponse(DocumentDescriptorAssociation association) {
         this.descriptor = association.getDescriptor().getName();
         this.value = association.getValue();
     }

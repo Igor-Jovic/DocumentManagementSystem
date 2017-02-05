@@ -7,18 +7,12 @@ package rs.ac.bg.fon.silab.dms.rest.services.tree.dto;
 
 import rs.ac.bg.fon.silab.dms.core.model.Activity;
 
-/**
- * @author stefan
- */
-public class ActivityTreeResponse {
+class ActivityTreeResponse {
 
     private Long id;
     private String name;
     private DocumentTypeResponse inputDocumentType;
     private DocumentTypeResponse outputDocumentType;
-
-    public ActivityTreeResponse() {
-    }
 
     ActivityTreeResponse(Activity activity) {
         this.id = activity.getId();

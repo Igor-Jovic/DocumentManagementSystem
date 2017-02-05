@@ -1,7 +1,7 @@
 package rs.ac.bg.fon.silab.dms.core.service;
 
 import org.junit.Test;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.repository.CompanyRepository;
 
@@ -13,8 +13,8 @@ import static org.mockito.Mockito.when;
 
 public class CompanyServiceTest {
 
-    @Test(expected = BadRequestException.class)
-    public void createCompany_companyExists_throwException() throws BadRequestException {
+    @Test(expected = DMSErrorException.class)
+    public void createCompany_companyExists_throwException() throws DMSErrorException {
         Company company = new Company("Company");
         CompanyRepository companyRepositoryMock = mock(CompanyRepository.class);
         when(companyRepositoryMock.findByName(any())).thenReturn(company);
@@ -25,7 +25,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    public void createCompany_companyDoesntExists_createsCompany() throws BadRequestException {
+    public void createCompany_companyDoesntExists_createsCompany() throws DMSErrorException {
         Company company = new Company("Company");
         CompanyRepository companyRepositoryMock = mock(CompanyRepository.class);
         when(companyRepositoryMock.findByName(any())).thenReturn(null);

@@ -2,7 +2,7 @@ package rs.ac.bg.fon.silab.dms.core.service;
 
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
@@ -12,8 +12,8 @@ import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
 
-    @Test(expected = BadRequestException.class)
-    public void validateUser_userExists_throwBadRequestException() throws BadRequestException {
+    @Test(expected = DMSErrorException.class)
+    public void validateUser_userExists_throwBadRequestException() throws DMSErrorException {
         Company adminCompany = new Company("adminCompany");
         User user = new User("admin", "admin", Role.ADMIN, adminCompany);
         UserRepository userRepositoryMock = mock(UserRepository.class);
@@ -28,7 +28,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void validateUser_userInIllegalState_throwIllegalStateException() throws BadRequestException {
+    public void validateUser_userInIllegalState_throwIllegalStateException() throws DMSErrorException {
         User user = new User("admin", null, Role.ADMIN, null);
         UserRepository userRepositoryMock = mock(UserRepository.class);
 
@@ -39,7 +39,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createUserWithNewCompany_validUser_saveUser() throws BadRequestException {
+    public void createUserWithNewCompany_validUser_saveUser() throws DMSErrorException {
         Company adminCompany = new Company("admin");
         User user = new User("admin", "admin", Role.ADMIN, adminCompany);
         UserRepository userRepositoryMock = mock(UserRepository.class);
@@ -58,15 +58,15 @@ public class UserServiceTest {
         verify(companyServiceMock, times(1)).createCompany(adminCompany);
     }
 
-    @Test(expected = BadRequestException.class)
-    public void createUserWithNewCompany_companyExists_doNotSaveUser() throws BadRequestException {
+    @Test(expected = DMSErrorException.class)
+    public void createUserWithNewCompany_companyExists_doNotSaveUser() throws DMSErrorException {
         Company adminCompany = new Company("admin");
         User user = new User("admin", "admin", Role.ADMIN, adminCompany);
         UserRepository userRepositoryMock = mock(UserRepository.class);
         CompanyService companyServiceMock = mock(CompanyService.class);
 
         when(userRepositoryMock.findByUsername("admin")).thenReturn(null);
-        when(companyServiceMock.createCompany(adminCompany)).thenThrow(new BadRequestException("Company with given name already exists."));
+        when(companyServiceMock.createCompany(adminCompany)).thenThrow(new DMSErrorException("Company with given name already exists."));
 
         UserService testee = new UserService(userRepositoryMock, null, companyServiceMock);
         testee.createUserWithNewCompany(user);
@@ -75,7 +75,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createUser_userDoesntExist_saveUser() throws BadRequestException {
+    public void createUser_userDoesntExist_saveUser() throws DMSErrorException {
         Company adminCompany = new Company("userCompany");
         User user = new User("user", "user", Role.USER, adminCompany);
         UserRepository userRepositoryMock = mock(UserRepository.class);

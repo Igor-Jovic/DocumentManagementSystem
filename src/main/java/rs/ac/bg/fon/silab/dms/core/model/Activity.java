@@ -118,8 +118,7 @@ public class Activity {
 
         Activity activity = (Activity) o;
 
-        if (!id.equals(activity.id)) return false;
-        return parentProcess.equals(activity.parentProcess);
+        return id.equals(activity.id) && parentProcess.equals(activity.parentProcess);
 
     }
 

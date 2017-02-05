@@ -7,7 +7,6 @@ public class ApiResponse {
     private String errorMessage;
 
     private ApiResponse() {
-        
     }
 
     public boolean isSuccess() {

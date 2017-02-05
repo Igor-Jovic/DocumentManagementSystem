@@ -1,12 +1,11 @@
 package rs.ac.bg.fon.silab.dms.rest.services.authentication.login;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationRestService;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.login.dto.LoginRequest;
@@ -29,24 +28,24 @@ public class LoginRestService extends AuthenticationRestService {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity login(@RequestBody LoginRequest loginRequest) throws BadRequestException {
+    public ResponseEntity login(@RequestBody LoginRequest loginRequest) throws DMSErrorException {
         validateRequest(loginRequest);
         LoginResponse loginResponse = handleAuthentication(loginRequest);
         return (ResponseEntity) ResponseEntity.ok(createSuccessResponse(loginResponse));
     }
 
     @DeleteMapping(value = "/logout")
-    public ResponseEntity logout(@RequestHeader("X-Authorization") String token) throws BadRequestException {
+    public ResponseEntity logout(@RequestHeader("X-Authorization") String token) throws DMSErrorException {
         tokenAuthenticationService.removeAuthentication(token);
         return (ResponseEntity) ResponseEntity.status(HttpStatus.FORBIDDEN).body(createErrorResponse("Logged out"));
     }
 
     @GetMapping(value = "/user")
-    public ResponseEntity getCurrentUser(@RequestHeader("X-Authorization") String token) throws BadRequestException {
+    public ResponseEntity getCurrentUser(@RequestHeader("X-Authorization") String token) throws DMSErrorException {
         AuthenticationData authenticationData = tokenAuthenticationService.getAuthenticationData(token);
-        //TODO: Remove after implementation of token persistance.
+        //TODO: Remove after implementation of token persistence.
         if (authenticationData == null) {
-            throw new BadRequestException("Your session has expired, please log in.");
+            throw new DMSErrorException("Your session has expired, please log in.");
         }
         LoginResponse loginResponse = authenticationDataToLoginResponse(authenticationData);
         return (ResponseEntity) ResponseEntity.ok(createSuccessResponse(loginResponse));
@@ -59,9 +58,9 @@ public class LoginRestService extends AuthenticationRestService {
         return authenticationDataToLoginResponse(authenticationData);
     }
 
-    private void validateRequest(LoginRequest loginRequest) throws BadRequestException {
+    private void validateRequest(LoginRequest loginRequest) throws DMSErrorException {
         if (!loginRequest.isValid()) {
-            throw new BadRequestException("In order to login you need to provide username and password.");
+            throw new DMSErrorException("In order to login you need to provide username and password.");
         }
     }
 }

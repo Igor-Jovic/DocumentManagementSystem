@@ -8,7 +8,7 @@ package rs.ac.bg.fon.silab.dms.core.service;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.repository.ProcessRepository;
 
 /**
@@ -17,8 +17,8 @@ import rs.ac.bg.fon.silab.dms.core.repository.ProcessRepository;
  */
 public class ProcessServiceTest {
 
-    @Test(expected = BadRequestException.class)
-    public void getProcess_processNotExists_throwBadRequestException() throws BadRequestException {
+    @Test(expected = DMSErrorException.class)
+    public void getProcess_processNotExists_throwBadRequestException() throws DMSErrorException {
         Long processId = 12l;
         ProcessRepository processRepositoryMock = mock(ProcessRepository.class);
         

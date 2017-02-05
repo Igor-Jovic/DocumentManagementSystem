@@ -1,8 +1,6 @@
 package rs.ac.bg.fon.silab.dms.rest.services.activity.dto;
 
-import rs.ac.bg.fon.silab.dms.util.StringUtils;
-
-import static rs.ac.bg.fon.silab.dms.util.StringUtils.*;
+import static org.springframework.util.StringUtils.isEmpty;
 
 
 public class ActivityRequest {
@@ -12,6 +10,6 @@ public class ActivityRequest {
     public long outputDocumentTypeId;
 
     public boolean isValid() {
-        return !isStringEmptyOrNull(name);
+        return !isEmpty(name);
     }
 }

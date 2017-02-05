@@ -5,12 +5,8 @@
  */
 package rs.ac.bg.fon.silab.dms.rest.services.document.dto;
 
-/**
- *
- * @author stefan
- */
 public class DocumentDescriptorRequest {
-    
+
     private Long id;
     private String value;
 
@@ -29,5 +25,5 @@ public class DocumentDescriptorRequest {
     public void setValue(String value) {
         this.value = value;
     }
-    
+
 }

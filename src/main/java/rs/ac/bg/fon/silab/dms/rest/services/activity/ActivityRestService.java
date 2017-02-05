@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Activity;
 import rs.ac.bg.fon.silab.dms.core.model.CompanyProcess;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
@@ -31,19 +31,19 @@ public class ActivityRestService {
     private ProcessService processService;
 
     @PostMapping
-    public ResponseEntity createActivity(@RequestBody ActivityRequest activityRequest) throws BadRequestException {
+    public ResponseEntity createActivity(@RequestBody ActivityRequest activityRequest) throws DMSErrorException {
         if (!activityRequest.isValid()) {
-            throw new BadRequestException("Activity must have name, parent process, input and output document");
+            throw new DMSErrorException("Activity must have name, parent process, input and output document");
         }
         if (activityService.checkIfExists(activityRequest.name, activityRequest.parentProcessId)) {
-            throw new BadRequestException("Activity already exists");
+            throw new DMSErrorException("Activity already exists");
         }
         Activity activity = activityRequestToActivity(activityRequest);
         activityService.createActivity(activity);
         return ResponseEntity.ok(ApiResponse.createSuccessResponse(activityToActivityResponse(activity)));
     }
 
-    private Activity activityRequestToActivity(ActivityRequest activityRequest) throws BadRequestException {
+    private Activity activityRequestToActivity(ActivityRequest activityRequest) throws DMSErrorException {
         DocumentType inputDocument = documentTypeService.getDocumentType(activityRequest.inputDocumentTypeId);
         DocumentType outputDocument = documentTypeService.getDocumentType(activityRequest.outputDocumentTypeId);
         CompanyProcess process = processService.getProcess(activityRequest.parentProcessId);

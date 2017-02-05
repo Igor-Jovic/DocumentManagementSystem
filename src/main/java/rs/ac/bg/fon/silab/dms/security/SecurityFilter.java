@@ -10,11 +10,11 @@ import java.io.IOException;
 
 public class SecurityFilter extends OncePerRequestFilter {
 
-    TokenAuthenticationService tokenAuthenticationService = TokenAuthenticationService.getInstance();
-    private final String AUTHORIZATION_HEADER = "X-Authorization";
+    final TokenAuthenticationService tokenAuthenticationService = TokenAuthenticationService.getInstance();
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        String AUTHORIZATION_HEADER = "X-Authorization";
         String token = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
         AuthenticationData authenticationData = tokenAuthenticationService.getAuthenticationData(token);
         if (authenticationData != null) {

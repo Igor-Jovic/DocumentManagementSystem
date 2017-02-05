@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
-import rs.ac.bg.fon.silab.dms.rest.model.ApiResponse;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.security.exception.UnknownUserException;
 
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createErrorResponse;
@@ -14,7 +13,7 @@ import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createErrorResponse;
 @ControllerAdvice
 public class GlobalErrorHandler {
     // 400
-    @ExceptionHandler({BadRequestException.class})
+    @ExceptionHandler({DMSErrorException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity handleInvalidRequestFormat(Throwable e) {
         return ResponseEntity.badRequest().body(createErrorResponse(e.getLocalizedMessage()));

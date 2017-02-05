@@ -5,43 +5,28 @@
  */
 package rs.ac.bg.fon.silab.dms.rest.services.document;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
+import rs.ac.bg.fon.silab.dms.core.model.*;
+import rs.ac.bg.fon.silab.dms.core.service.ActivityService;
+import rs.ac.bg.fon.silab.dms.core.service.DocumentService;
+import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
+import rs.ac.bg.fon.silab.dms.core.service.UserService;
+import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentDescriptorRequest;
+import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentRequest;
+import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse;
+import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
-import rs.ac.bg.fon.silab.dms.core.model.Activity;
-import rs.ac.bg.fon.silab.dms.core.model.Company;
-import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
-import rs.ac.bg.fon.silab.dms.core.model.Document;
-import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
-import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
-import rs.ac.bg.fon.silab.dms.core.model.User;
-import rs.ac.bg.fon.silab.dms.core.service.ActivityService;
-import rs.ac.bg.fon.silab.dms.core.service.DocumentService;
-import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
-import rs.ac.bg.fon.silab.dms.core.service.UserService;
-
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
-import static rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse.*;
+import static rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse.getDocumentResponseList;
 
-import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentDescriptorRequest;
-import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentRequest;
-import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse;
-
-/**
- * @author stefan
- */
 @RestController
 @RequestMapping("/documents")
 public class DocumentRestService {
@@ -56,11 +41,11 @@ public class DocumentRestService {
     private DocumentTypeService documentTypeService;
 
     @Autowired
-    private UserService userService;
+    private TokenAuthenticationService tokenAuthenticationService;
 
     @PostMapping
-    public ResponseEntity create(@RequestHeader("X-Authorization") String token, @RequestBody DocumentRequest documentRequest) throws BadRequestException {
-        User authenticatedUser = userService.getAuthenticatedUser(token);
+    public ResponseEntity create(@RequestHeader("X-Authorization") String token, @RequestBody DocumentRequest documentRequest) throws DMSErrorException {
+        User authenticatedUser = tokenAuthenticationService.getAuthenticatedUser(token);
 
         Document document = documentService.createDocument(createDocumentFromRequest(documentRequest, authenticatedUser.getCompany()));
         List<DocumentDescriptorAssociation> associations = createDescriptorsAssotiations(document, documentRequest);
@@ -73,50 +58,44 @@ public class DocumentRestService {
 
     @GetMapping
     public ResponseEntity getAll(@RequestHeader("X-Authorization") String token) {
-        User authenticatedUser = userService.getAuthenticatedUser(token);
+        User authenticatedUser = tokenAuthenticationService.getAuthenticatedUser(token);
         List<Document> documents = documentService.getAllDocumentsByCompanyId(authenticatedUser.getCompany().getId());
-//        List<Document> documents = authenticatedUser.getCompany().getDocumentTypes().stream()
-//                .flatMap(e -> e.getDocuments().stream())
-//                .collect(Collectors.toList());
-
         List<DocumentResponse> documentResponses = getDocumentResponseList(documents);
         return ResponseEntity.ok(createSuccessResponse(documentResponses));
     }
 
     @GetMapping(value = "/activities/{activityId}")
-    public ResponseEntity getAllForActivity(@RequestHeader("X-Authorization") String token, @PathVariable("activityId") Long activityId) {
-        User authenticatedUser = userService.getAuthenticatedUser(token);
-
+    public ResponseEntity getAllForActivity(@PathVariable("activityId") Long activityId) {
 
         List<Document> allInputDocumentsForActivity = documentService.getAllInputDocumentsForActivity(activityId);
         List<Document> allOutputDocumentsForActivity = documentService.getAllOutputDocumentsForActivity(activityId);
 
 
-        Map response = new HashMap();
+        Map<String, List<DocumentResponse>> response = new HashMap<>();
         response.put("inputs", getDocumentResponseList(allInputDocumentsForActivity));
         response.put("outputs", getDocumentResponseList(allOutputDocumentsForActivity));
         return ResponseEntity.ok(createSuccessResponse(response));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity getOne(@RequestHeader("X-Authorization") String token, @PathVariable("id") Long id) throws BadRequestException {
-        User authenticatedUser = userService.getAuthenticatedUser(token);
+    public ResponseEntity getOne(@RequestHeader("X-Authorization") String token, @PathVariable("id") Long id) throws DMSErrorException {
+        User authenticatedUser = tokenAuthenticationService.getAuthenticatedUser(token);
         Document document = documentService.getDocument(id);
 
         if (!document.getDocumentType().getCompany().equals(authenticatedUser.getCompany())) {
-            throw new BadRequestException("Your company does not have specified document.");
+            throw new DMSErrorException("Your company does not have specified document.");
         }
 
         DocumentResponse documentResponse = new DocumentResponse(document);
         return ResponseEntity.ok(createSuccessResponse(documentResponse));
     }
 
-    private Document createDocumentFromRequest(DocumentRequest documentRequest, Company company) throws BadRequestException {
+    private Document createDocumentFromRequest(DocumentRequest documentRequest, Company company) throws DMSErrorException {
         Document document = new Document();
         DocumentType documentType = documentTypeService.getDocumentType(documentRequest.getId());
 
         if (!company.equals(documentType.getCompany())) {
-            throw new BadRequestException("Your company does not have specified document type.");
+            throw new DMSErrorException("Your company does not have specified document type.");
         }
 
         document.setDocumentType(documentType);
@@ -133,7 +112,7 @@ public class DocumentRestService {
         return document;
     }
 
-    public List<DocumentDescriptorAssociation> createDescriptorsAssotiations(Document document, DocumentRequest documentRequest) throws BadRequestException {
+    private List<DocumentDescriptorAssociation> createDescriptorsAssotiations(Document document, DocumentRequest documentRequest) throws DMSErrorException {
         boolean validDescriptors = document.getDocumentType().getDescriptors().stream()
                 .map(Descriptor::getId)
                 .collect(Collectors.toList())
@@ -141,14 +120,13 @@ public class DocumentRestService {
                         .map(DocumentDescriptorRequest::getId)
                         .collect(Collectors.toList()));
         if (!validDescriptors) {
-            throw new BadRequestException("Invalid descriptors.");
+            throw new DMSErrorException("Invalid descriptors.");
         }
-        List<DocumentDescriptorAssociation> associations = documentRequest.getDescriptors().stream()
+        return documentRequest.getDescriptors().stream()
                 .map(e -> new DocumentDescriptorAssociation(
                         document, document.getDocumentType().getDescriptors().stream()
                         .filter(d -> d.getId().equals(e.getId()))
-                        .findFirst().get(), e.getValue())).collect(Collectors.toList());
-        return associations;
+                        .findFirst().orElse(null), e.getValue())).collect(Collectors.toList());
 
     }
 

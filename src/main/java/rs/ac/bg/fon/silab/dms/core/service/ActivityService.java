@@ -2,10 +2,11 @@ package rs.ac.bg.fon.silab.dms.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Activity;
 import rs.ac.bg.fon.silab.dms.core.repository.ActivityRepository;
-import rs.ac.bg.fon.silab.dms.util.StringUtils;
+
+import static org.springframework.util.StringUtils.isEmpty;
 
 @Service
 public class ActivityService {
@@ -22,24 +23,22 @@ public class ActivityService {
         return activityRepository.saveAndFlush(activity);
     }
 
-    public Activity getActivity(Long id) throws BadRequestException {
+    public Activity getActivity(Long id) throws DMSErrorException {
         Activity activity = activityRepository.findOne(id);
         if (activity == null) {
-            throw new BadRequestException("Activity does not exists.");
+            throw new DMSErrorException("Activity does not exists.");
         }
         return activity;
     }
 
     private void validateActivity(Activity activity) {
-        if (activity.getInputDocumentType() == null
-                || activity.getOutputDocuments() == null
-                || activity.getParentProcess() == null
-                || StringUtils.isStringEmptyOrNull(activity.getName())) {
+        if (activity.getInputDocumentType() == null || activity.getOutputDocuments() == null
+                || activity.getParentProcess() == null || isEmpty(activity.getName())) {
             throw new IllegalStateException("Activity is in a bad state.");
         }
     }
 
-    public boolean checkIfExists(String name, Long processId) throws BadRequestException {
+    public boolean checkIfExists(String name, Long processId) throws DMSErrorException {
         return activityRepository.findByNameAndParentProcessId(name, processId) != null;
     }
 

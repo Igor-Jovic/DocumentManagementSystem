@@ -16,7 +16,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
@@ -28,8 +28,8 @@ import rs.ac.bg.fon.silab.dms.core.repository.DocumentTypeRepository;
  */
 public class DocumentTypeServiceTest {
 
-    @Test(expected = BadRequestException.class)
-    public void getDocumentType_documentTypeNotExists_throwBadRequestException() throws BadRequestException {
+    @Test(expected = DMSErrorException.class)
+    public void getDocumentType_documentTypeNotExists_throwBadRequestException() throws DMSErrorException {
         Long documentTypeId = 12l;
         DocumentTypeRepository documentRepositoryMock = mock(DocumentTypeRepository.class);
 
@@ -39,8 +39,8 @@ public class DocumentTypeServiceTest {
         testee.getDocumentType(documentTypeId);
     }
 
-    @Test(expected = BadRequestException.class)
-    public void validateDocumentType_documentTypeExists_throwBadRequestException() throws BadRequestException {
+    @Test(expected = DMSErrorException.class)
+    public void validateDocumentType_documentTypeExists_throwBadRequestException() throws DMSErrorException {
         Company adminCompany = new Company("testCompany");
         String name = "test document type";
         DocumentType documentType = new DocumentType(name, adminCompany);
@@ -54,7 +54,7 @@ public class DocumentTypeServiceTest {
     }
 
     @Test
-    public void createDocumentType_validDocumentType_saveDocumentType() throws BadRequestException {
+    public void createDocumentType_validDocumentType_saveDocumentType() throws DMSErrorException {
         Company adminCompany = new Company("testCompany");
         String name = "test document type";
         DocumentType documentType = new DocumentType(name, adminCompany);
@@ -75,8 +75,8 @@ public class DocumentTypeServiceTest {
         verify(documentTypeRepositoryMock, times(1)).saveAndFlush(documentType);
     }
 
-    @Test(expected = BadRequestException.class)
-    public void createDocumentType_documentTypeExists_doNotSaveDocumentType() throws BadRequestException {
+    @Test(expected = DMSErrorException.class)
+    public void createDocumentType_documentTypeExists_doNotSaveDocumentType() throws DMSErrorException {
         Company adminCompany = new Company("testCompany");
         String name = "test document type";
         DocumentType documentType = new DocumentType(name, adminCompany);

@@ -7,12 +7,8 @@ package rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto;
 
 import java.util.List;
 
-/**
- *
- * @author stefan
- */
 public class DocumentTypeRequest {
-    
+
     private String name;
     private List<String> descriptors;
 
@@ -31,5 +27,5 @@ public class DocumentTypeRequest {
     public void setDescriptors(List<String> descriptors) {
         this.descriptors = descriptors;
     }
-    
+
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rs.ac.bg.fon.silab.dms.core.exception.BadRequestException;
+import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 import rs.ac.bg.fon.silab.dms.core.repository.DescriptorRepository;
@@ -24,7 +24,7 @@ public class DocumentTypeService {
         this.descriptorRepository = descriptorRepository;
     }
 
-    public DocumentType createDocumentType(DocumentType documentType) throws BadRequestException {
+    public DocumentType createDocumentType(DocumentType documentType) throws DMSErrorException {
         validateDocumentType(documentType);
         for (Descriptor descriptor : documentType.getDescriptors()) {
             descriptorRepository.save(descriptor);
@@ -37,17 +37,17 @@ public class DocumentTypeService {
         return documentRepository.findAll();
     }
 
-    public DocumentType getDocumentType(Long id) throws BadRequestException {
+    public DocumentType getDocumentType(Long id) throws DMSErrorException {
         DocumentType documentType = documentRepository.findOne(id);
         if (documentType == null) {
-            throw new BadRequestException("Document type does not exists.");
+            throw new DMSErrorException("Document type does not exists.");
         }
         return documentType;
     }
 
-    void validateDocumentType(DocumentType documentType) throws BadRequestException {
+    void validateDocumentType(DocumentType documentType) throws DMSErrorException {
         if (documentRepository.getByNameAndCompanyId(documentType.getName(), documentType.getCompany().getId()) != null) {
-            throw new BadRequestException("Document type with given name already exists.");
+            throw new DMSErrorException("Document type with given name already exists.");
         }
     }
 

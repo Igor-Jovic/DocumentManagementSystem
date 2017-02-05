@@ -84,10 +84,7 @@ public class Company {
 
         Company company = (Company) o;
 
-        if (!id.equals(company.id)) {
-            return false;
-        }
-        return name.equals(company.name);
+        return id.equals(company.id) && name.equals(company.name);
     }
 
     @Override
