@@ -22,6 +22,7 @@ public class SecurityConfiguration {
             http.authorizeRequests()
                     .antMatchers("/users").hasAuthority(Role.ADMIN.toString())
                     .antMatchers("/auth/**").permitAll()
+                    .antMatchers("/tebra").permitAll()
                     .antMatchers("/documents").permitAll()
                     .antMatchers("/processes").permitAll()
                     .antMatchers("/auth/logout").authenticated()

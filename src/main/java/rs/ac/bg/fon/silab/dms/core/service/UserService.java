@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
-import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
 
 import static org.springframework.util.StringUtils.isEmpty;
 
