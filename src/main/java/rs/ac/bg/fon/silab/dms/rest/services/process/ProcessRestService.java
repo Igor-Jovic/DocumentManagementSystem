@@ -54,23 +54,29 @@ public class ProcessRestService {
         return user.getCompany().hasProcess(process);
     }
 
+
+    //TODO: create inconsistent Process and pass it to processService. Service should handle verification of the state.
+    //Validation of the state is not REST Service's concern.
     private CompanyProcess createProcessFromRequest(ProcessRequest processRequest, Company company) throws BadRequestException {
         CompanyProcess companyProcess = new CompanyProcess();
         companyProcess.setCompany(company);
         companyProcess.setName(processRequest.getName());
+        CompanyProcess parentProcess = null;
         if (processRequest.getParentProcess() != null) {
-            CompanyProcess parentProcess = processService.getProcess(processRequest.getParentProcess());
+            parentProcess = processService.getProcess(processRequest.getParentProcess());
             if (parentProcess.isPrimitive()) {
                 throw new BadRequestException("You can create only activity from primitive process.");
             }
-            if (parentProcess.getChildProcesses().stream().filter(e -> e.isPrimitive()).findAny().isPresent()) {
+            if (parentProcess.getChildProcesses().stream().anyMatch(CompanyProcess::isPrimitive)) {
                 if (!processRequest.isPrimitive()) {
                     throw new BadRequestException("Child process for this parent can be only primitive process.");
                 }
             }
-            companyProcess.setParentProcess(parentProcess);
+            if (parentProcess.getChildProcesses().stream().anyMatch(companyProcess1 -> !companyProcess1.isPrimitive()) && processRequest.isPrimitive())
+                throw new BadRequestException("Child process for this parent cannot be primitive.");
         }
         companyProcess.setPrimitive(processRequest.isPrimitive());
+        companyProcess.setParentProcess(parentProcess);
         return companyProcess;
     }
 
