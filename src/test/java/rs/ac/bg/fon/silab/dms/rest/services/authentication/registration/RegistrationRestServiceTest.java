@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.http.ContentType.JSON;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 public class RegistrationRestServiceTest extends RestIntegrationTest {
 
@@ -20,6 +21,8 @@ public class RegistrationRestServiceTest extends RestIntegrationTest {
         given().contentType(JSON).body(registrationRequest)
                 .when().post("/auth/registration")
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .body("content.message", equalTo("Registration successful for admin: newUser@newCompany, you can now login."));
     }
+
 }
