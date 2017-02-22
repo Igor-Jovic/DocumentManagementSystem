@@ -6,8 +6,10 @@
 package rs.ac.bg.fon.silab.dms.rest.services.document;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.*;
 import rs.ac.bg.fon.silab.dms.core.service.ActivityService;
@@ -19,6 +21,12 @@ import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +86,7 @@ public class DocumentRestService {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity getOne(@RequestHeader("X-Authorization") String token, @PathVariable("id") Long id) throws DMSErrorException {
+    public ResponseEntity getOne(@RequestHeader("X-Authorization") String token, @PathVariable("id") Long id) {
         User authenticatedUser = tokenAuthenticationService.getAuthenticatedUser(token);
         Document document = documentService.getDocument(id);
 
@@ -90,7 +98,25 @@ public class DocumentRestService {
         return ResponseEntity.ok(createSuccessResponse(documentResponse));
     }
 
-    private Document createDocumentFromRequest(DocumentRequest documentRequest, Company company) throws DMSErrorException {
+    @RequestMapping(value = "/file", method = RequestMethod.POST)
+    public ResponseEntity uploadFile(@RequestParam("document") MultipartFile uploadfile) {
+        String filename = uploadfile.getOriginalFilename();
+        try {
+            String directory = "uploads";
+            String filepath = Paths.get(directory, filename).toString();
+
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+            stream.write(uploadfile.getBytes());
+            stream.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new DMSErrorException(e.getMessage());
+        }
+
+        return ResponseEntity.ok((createSuccessResponse(filename)));
+    }
+
+    private Document createDocumentFromRequest(DocumentRequest documentRequest, Company company) {
         Document document = new Document();
         DocumentType documentType = documentTypeService.getDocumentType(documentRequest.getId());
 
@@ -102,7 +128,6 @@ public class DocumentRestService {
         document.setCompany(company);
         Activity activity = activityService.getActivity(documentRequest.getActivityId());
 
-        // check if user can use activity
         if (documentRequest.isInput()) {
             document.setInputForActivity(activity);
         } else {
