@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import rs.ac.bg.fon.silab.dms.DocumentManagementSystemApp;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.login.dto.LoginResponse;
-import rs.ac.bg.fon.silab.dms.testUtil.AuthenticationApi;
+import rs.ac.bg.fon.silab.dms.testutils.AuthenticationApi;
 
 import java.io.File;
 import java.io.IOException;
