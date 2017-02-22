@@ -22,7 +22,7 @@ public class TokenAuthenticationService {
     private static final TokenAuthenticationService instance = new TokenAuthenticationService();
     private final Map<String, AuthenticationData> cachedAuthenticationData;
 
-    private TokenAuthenticationService() {
+    TokenAuthenticationService() {
         cachedAuthenticationData = new HashMap<>();
     }
 

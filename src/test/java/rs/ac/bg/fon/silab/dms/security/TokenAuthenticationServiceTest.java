@@ -1,24 +1,19 @@
 package rs.ac.bg.fon.silab.dms.security;
 
-import org.apache.el.parser.Token;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-/**
- * Created by igor on 1/16/17.
- */
 public class TokenAuthenticationServiceTest {
 
 
-    private TokenAuthenticationService testee = TokenAuthenticationService.getInstance();
+    private TokenAuthenticationService testee = new TokenAuthenticationService();
 
     @Test
     public void getAuthenticationData_cachedDataEmpty_returnsNull() {
