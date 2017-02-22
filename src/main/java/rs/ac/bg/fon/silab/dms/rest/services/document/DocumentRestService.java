@@ -126,6 +126,7 @@ public class DocumentRestService {
 
         document.setDocumentType(documentType);
         document.setCompany(company);
+        document.setFileName(documentRequest.getFileName());
         Activity activity = activityService.getActivity(documentRequest.getActivityId());
 
         if (documentRequest.isInput()) {

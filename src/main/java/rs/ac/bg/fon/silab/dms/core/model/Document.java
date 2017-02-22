@@ -31,6 +31,17 @@ public class Document {
     @JoinColumn(name = "OUTPUT_FOR_ACTIVITY")
     private Activity outputForActivity;
 
+    @Column(name = "FILE_NAME")
+    private String fileName;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Activity getInputForActivity() {
         return inputForActivity;
     }

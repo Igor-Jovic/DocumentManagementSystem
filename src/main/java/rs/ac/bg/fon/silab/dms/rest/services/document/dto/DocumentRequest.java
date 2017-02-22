@@ -13,6 +13,15 @@ public class DocumentRequest {
     private List<DocumentDescriptorRequest> descriptors;
     private boolean input;
     private Long activityId;
+    private String fileName;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public Long getId() {
         return id;
