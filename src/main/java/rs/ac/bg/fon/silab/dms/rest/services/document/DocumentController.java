@@ -5,6 +5,8 @@
  */
 package rs.ac.bg.fon.silab.dms.rest.services.document;
 
+import org.apache.http.entity.ContentType;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +23,15 @@ import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.FileStore;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
@@ -38,6 +40,9 @@ import static rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {
+
+
+    private static final String UPLOADS_DIRECTORY = "uploads";
 
     @Autowired
     private DocumentService documentService;
@@ -98,6 +103,22 @@ public class DocumentController {
         return ResponseEntity.ok(createSuccessResponse(documentResponse));
     }
 
+
+    @RequestMapping(value = "/file/{fileID}", method = RequestMethod.GET)
+    public void getFile(
+            @PathVariable("fileID") String fileName,
+            HttpServletResponse response) {
+        try {
+            String filepath = Paths.get(UPLOADS_DIRECTORY, getFullFileName(fileName)).toString();
+            InputStream inputStream = new FileInputStream(filepath);
+            IOUtils.copy(inputStream, response.getOutputStream());
+            response.setContentType("application/pdf");
+            response.flushBuffer();
+        } catch (IOException e) {
+            throw new DMSErrorException("File doesn't exist.");
+        }
+    }
+
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     public ResponseEntity uploadFile(@RequestParam(name = "document", required = false) MultipartFile uploadfile) {
         if (uploadfile == null) {
@@ -156,6 +177,19 @@ public class DocumentController {
                         .filter(d -> d.getId().equals(e.getId()))
                         .findFirst().orElse(null), e.getValue())).collect(Collectors.toList());
 
+    }
+
+    private String getFullFileName(String fileName) throws IOException {
+        Path path = Paths.get(UPLOADS_DIRECTORY);
+        File fileStore = new File(path.toString());
+        Optional<File> retval = Arrays.stream(fileStore.listFiles())
+                .filter(file -> file.getName().startsWith(fileName + "."))
+                .findFirst();
+
+        if (!retval.isPresent()) {
+            throw new DMSErrorException("No such file.");
+        }
+        return retval.get().getName();
     }
 
 }
