@@ -1,6 +1,7 @@
 package rs.ac.bg.fon.silab.dms.testutils;
 
 import org.json.JSONObject;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.web.client.RestTemplate;
 import rs.ac.bg.fon.silab.dms.rest.model.ApiResponse;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.login.dto.LoginRequest;
@@ -20,7 +21,7 @@ public class AuthenticationApi {
     }
 
     public LoginResponse loginAs(String username, String password) throws IOException {
-        RestTemplate restTemplate = new RestTemplate();
+        TestRestTemplate restTemplate = new TestRestTemplate();
         ApiResponse response = restTemplate.postForObject(basePath, new LoginRequest(username, password), ApiResponse.class);
         return getLoginResponse(response);
     }
