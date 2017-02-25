@@ -26,7 +26,7 @@ import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessRespons
 
 @RestController
 @RequestMapping("/documenttypes")
-public class DocumentTypeRestService {
+public class DocumentTypeController {
 
     @Autowired
     private DocumentTypeService documentService;

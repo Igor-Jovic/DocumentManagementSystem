@@ -8,7 +8,7 @@ import rs.ac.bg.fon.silab.dms.security.CustomAuthenticationProvider;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
 
 @RequestMapping("/auth")
-public class AuthenticationRestService {
+public class AuthenticationController {
 
     @Autowired
     protected UserService userService;
@@ -19,7 +19,7 @@ public class AuthenticationRestService {
     @Autowired
     protected TokenAuthenticationService tokenAuthenticationService;
 
-    public AuthenticationRestService(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
+    public AuthenticationController(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
         this.authenticationProvider = customAuthenticationProvider;
         this.userService = userService;
         this.tokenAuthenticationService = tokenAuthenticationService;

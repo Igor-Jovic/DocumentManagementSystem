@@ -10,7 +10,7 @@ import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.http.ContentType.JSON;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class RegistrationRestServiceTest extends RestIntegrationTest {
+public class RegistrationControllerTest extends RestIntegrationTest {
 
     private static final String ROOT_PATH = "/authentication";
 

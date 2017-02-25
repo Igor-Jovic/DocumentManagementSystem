@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
-import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationRestService;
+import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationController;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.login.dto.LoginRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.login.dto.LoginResponse;
 import rs.ac.bg.fon.silab.dms.security.AuthenticationData;
@@ -21,9 +21,9 @@ import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessRespons
 import static rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationMapper.authenticationDataToLoginResponse;
 
 @RestController
-public class LoginRestService extends AuthenticationRestService {
+public class LoginController extends AuthenticationController {
 
-    public LoginRestService(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
+    public LoginController(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
         super(userService, customAuthenticationProvider, tokenAuthenticationService);
     }
 

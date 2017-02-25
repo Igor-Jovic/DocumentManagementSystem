@@ -37,7 +37,7 @@ import static rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse
 
 @RestController
 @RequestMapping("/documents")
-public class DocumentRestService {
+public class DocumentController {
 
     @Autowired
     private DocumentService documentService;
@@ -99,7 +99,10 @@ public class DocumentRestService {
     }
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
-    public ResponseEntity uploadFile(@RequestParam("document") MultipartFile uploadfile) {
+    public ResponseEntity uploadFile(@RequestParam(name = "document", required = false) MultipartFile uploadfile) {
+        if (uploadfile == null) {
+            throw new DMSErrorException("Please provide a file.");
+        }
         String filename = uploadfile.getOriginalFilename();
         try {
             String directory = "uploads";
@@ -109,7 +112,6 @@ public class DocumentRestService {
             stream.write(uploadfile.getBytes());
             stream.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw new DMSErrorException(e.getMessage());
         }
 

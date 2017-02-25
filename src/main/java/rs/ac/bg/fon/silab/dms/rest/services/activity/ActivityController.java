@@ -19,7 +19,7 @@ import rs.ac.bg.fon.silab.dms.rest.services.activity.dto.ActivityResponse;
 
 @RestController
 @RequestMapping("/activities")
-public class ActivityRestService {
+public class ActivityController {
 
     @Autowired
     private ActivityService activityService;

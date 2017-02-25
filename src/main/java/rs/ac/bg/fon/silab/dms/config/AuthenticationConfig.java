@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
 
 @Configuration
-public class BeansConfig {
+public class AuthenticationConfig {
 
     @Bean
     public TokenAuthenticationService tokenAuthenticationService() {

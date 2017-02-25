@@ -21,7 +21,7 @@ import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessRespons
 
 @RestController
 @RequestMapping("/processes")
-public class ProcessRestService {
+public class ProcessController {
 
     @Autowired
     private ProcessService processService;

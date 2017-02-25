@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.ac.bg.fon.silab.dms.config;
+package rs.ac.bg.fon.silab.dms.rest.filter;
 
 import org.springframework.stereotype.Component;
 

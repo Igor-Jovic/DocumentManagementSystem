@@ -19,7 +19,7 @@ import static rs.ac.bg.fon.silab.dms.rest.services.users.UsersMapper.userToUserR
 
 @RestController
 @RequestMapping("/users")
-public class UserRestService {
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -27,7 +27,7 @@ public class UserRestService {
     @Autowired
     private TokenAuthenticationService tokenAuthenticationService;
 
-    public UserRestService(UserService userService, TokenAuthenticationService tokenAuthenticationService) {
+    public UserController(UserService userService, TokenAuthenticationService tokenAuthenticationService) {
         this.tokenAuthenticationService = tokenAuthenticationService;
         this.userService = userService;
     }

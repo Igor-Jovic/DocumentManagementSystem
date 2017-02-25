@@ -23,7 +23,7 @@ import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessRespons
 
 @RestController
 @RequestMapping("/tree")
-public class TreeRestService {
+public class TreeController {
 
     @Autowired
     private ProcessService processService;

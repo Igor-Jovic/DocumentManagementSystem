@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
-import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationRestService;
+import rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationController;
 import rs.ac.bg.fon.silab.dms.rest.services.authentication.registration.dto.RegistrationRequest;
 import rs.ac.bg.fon.silab.dms.security.CustomAuthenticationProvider;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
@@ -17,9 +17,9 @@ import static rs.ac.bg.fon.silab.dms.rest.services.authentication.Authentication
 import static rs.ac.bg.fon.silab.dms.rest.services.authentication.AuthenticationMapper.userToRegistrationResponse;
 
 @RestController
-public class RegistrationRestService extends AuthenticationRestService {
+public class RegistrationController extends AuthenticationController {
 
-    public RegistrationRestService(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
+    public RegistrationController(UserService userService, CustomAuthenticationProvider customAuthenticationProvider, TokenAuthenticationService tokenAuthenticationService) {
         super(userService, customAuthenticationProvider, tokenAuthenticationService);
     }
 
