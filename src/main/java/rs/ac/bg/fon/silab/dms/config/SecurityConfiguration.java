@@ -9,6 +9,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.security.SecurityFilter;
 
+import static rs.ac.bg.fon.silab.dms.core.model.Role.ADMIN;
+
 @Configuration
 public class SecurityConfiguration {
 
@@ -20,13 +22,14 @@ public class SecurityConfiguration {
             http.addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
 
             http.authorizeRequests()
-                    .antMatchers("/users").hasAuthority(Role.ADMIN.toString())
                     .antMatchers("/auth/**").permitAll()
-                    .antMatchers("/tebra").permitAll()
-                    .antMatchers("/documents").permitAll()
-                    .antMatchers("/processes").permitAll()
+                    .antMatchers("/documents").authenticated()
                     .antMatchers("/auth/logout").authenticated()
                     .antMatchers("/auth/user").authenticated()
+                    .antMatchers("/documenttypes").authenticated()
+                    .antMatchers("/users").hasAuthority(ADMIN.toString())
+                    .antMatchers("/processes").hasAuthority(ADMIN.toString())
+                    .antMatchers("/activities").hasAuthority(ADMIN.toString())
                     .antMatchers("/**").permitAll();
 
             http.exceptionHandling()

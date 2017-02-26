@@ -17,6 +17,8 @@ public class DocumentResponse {
     private String name;
     private Long documentTypeId;
     private List<DocumentDescriptorResponse> documentDescriptors;
+    private String downloadLink;
+
 
     public DocumentResponse() {
     }
@@ -31,6 +33,19 @@ public class DocumentResponse {
         this.description = document.getDocumentDescriptorAssociationList().stream()
                 .map(documentDescriptorAssociation -> String.format("%s : %s", documentDescriptorAssociation.getDescriptor().getName(), documentDescriptorAssociation.getValue()))
                 .collect(Collectors.joining(", "));
+        this.downloadLink = buildDownloadLink(document.getFileName());
+    }
+
+    private String buildDownloadLink(String fileName) {
+        return String.format("/documents/file/%s", fileName);
+    }
+
+    public String getDownloadLink() {
+        return downloadLink;
+    }
+
+    public void setDownloadLink(String downloadLink) {
+        this.downloadLink = downloadLink;
     }
 
     public Long getId() {

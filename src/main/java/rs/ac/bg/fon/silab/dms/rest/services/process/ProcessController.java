@@ -45,9 +45,6 @@ public class ProcessController {
         return user.getCompany().hasProcess(process);
     }
 
-
-    //TODO: create inconsistent Process and pass it to processService. Service should handle verification of the state.
-    //Validation of the state is not REST Service's concern.
     private CompanyProcess createProcessFromRequest(ProcessRequest processRequest, Company company) throws DMSErrorException {
         CompanyProcess companyProcess = new CompanyProcess();
         companyProcess.setCompany(company);
