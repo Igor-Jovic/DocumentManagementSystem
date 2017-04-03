@@ -12,7 +12,7 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 
