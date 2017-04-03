@@ -23,14 +23,11 @@ import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 import rs.ac.bg.fon.silab.dms.core.repository.DescriptorRepository;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentTypeRepository;
 
-/**
- * @author stefan
- */
 public class DocumentTypeServiceTest {
 
     @Test(expected = DMSErrorException.class)
     public void getDocumentType_documentTypeNotExists_throwBadRequestException() throws DMSErrorException {
-        Long documentTypeId = 12l;
+        Long documentTypeId = 12L;
         DocumentTypeRepository documentRepositoryMock = mock(DocumentTypeRepository.class);
 
         when(documentRepositoryMock.findOne(documentTypeId)).thenReturn(null);
