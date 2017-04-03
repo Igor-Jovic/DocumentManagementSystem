@@ -31,12 +31,12 @@ public class DocumentManagementSystemApp {
             @Override
             @Transactional
             public void run(String... strings) throws Exception {
-//                User u = new User();
-//                u.setUsername("admin");
-//                u.setPassword("admin");
-//                u.setCompany(new Company("adminCompany"));
-//                u.setRole(Role.ADMIN);
-//                userService.createUserWithNewCompany(u);
+                User u = new User();
+                u.setUsername("admin");
+                u.setPassword("admin");
+                u.setCompany(new Company("adminCompany"));
+                u.setRole(Role.ADMIN);
+                userService.createUserWithNewCompany(u);
             }
         };
     }
