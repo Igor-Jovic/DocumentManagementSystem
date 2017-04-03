@@ -36,7 +36,13 @@ public class DocumentManagementSystemApp {
                 u.setPassword("admin");
                 u.setCompany(new Company("adminCompany"));
                 u.setRole(Role.ADMIN);
-                userService.createUserWithNewCompany(u);
+                User admin = userService.createUserWithNewCompany(u);
+                User u2 = new User();
+                u2.setUsername("notAdmin");
+                u2.setPassword("notAdmin");
+                u2.setRole(Role.USER);
+                u2.setCompany(admin.getCompany());
+                userService.createUser(u2);
             }
         };
     }
