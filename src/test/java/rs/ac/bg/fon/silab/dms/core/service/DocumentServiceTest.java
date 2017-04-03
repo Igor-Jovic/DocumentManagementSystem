@@ -28,7 +28,7 @@ public class DocumentServiceTest {
         testee.getDocument(documentId);
     }
 
-    @Test(expected = DMSErrorException.class)
+    @Test
     public void getDocument_documentExists_returnsIt() {
         Long documentId = 1L;
         DocumentRepository documentRepositoryMock = mock(DocumentRepository.class);

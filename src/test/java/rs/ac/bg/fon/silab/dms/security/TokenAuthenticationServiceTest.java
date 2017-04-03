@@ -23,7 +23,7 @@ public class TokenAuthenticationServiceTest {
 
     @Test
     public void getAuthenticationData_tenMinutesAfterTokenInvalidation_returnsNullAndTokenRemoved() {
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken("", "", new ArrayList<GrantedAuthority>());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken("", "", new ArrayList<>());
         LocalDateTime authenticationTime = LocalDateTime.now().minusMinutes(testee.tokenLifeInMinutes + 10);
         AuthenticationData authenticationData = testee.saveAuthentication(authentication, authenticationTime);
 

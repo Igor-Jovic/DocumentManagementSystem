@@ -14,9 +14,6 @@ import rs.ac.bg.fon.silab.dms.security.exception.UnknownUserException;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-/**
- * Created by igor on 1/16/17.
- */
 public class CustomAuthenticationProviderTest {
 
     @Test(expected = UnknownUserException.class)
