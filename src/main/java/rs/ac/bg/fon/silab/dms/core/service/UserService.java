@@ -1,6 +1,8 @@
 package rs.ac.bg.fon.silab.dms.core.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,8 @@ import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
 
 import static org.springframework.util.StringUtils.isEmpty;
+import rs.ac.bg.fon.silab.dms.core.model.UserES;
+import rs.ac.bg.fon.silab.dms.core.repository.es.UserESRepository;
 
 @Service
 public class UserService {
@@ -22,10 +26,14 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-    UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, CompanyService companyService) {
+    @Autowired
+    private UserESRepository userESRepository;
+
+    UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, CompanyService companyService, UserESRepository userESRepository) {
         this.encoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.companyService = companyService;
+        this.userESRepository = userESRepository;
     }
 
     @Transactional
@@ -40,7 +48,9 @@ public class UserService {
     public User createUser(User user) throws DMSErrorException {
         validateUser(user);
         user.setPassword(encoder.encode(user.getPassword()));
-        return userRepository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
+        userESRepository.save(new UserES(user));
+        return user;
     }
 
     void validateUser(User user) throws DMSErrorException {
@@ -54,5 +64,13 @@ public class UserService {
 
     public User getUser(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public List<UserES> getByUsernameLike(String username, Pageable page) {
+        return userESRepository.findByUsernameLike(username, page).getContent();
+    }
+
+    public List<UserES> getByCompanyNameLike(String companyName, Pageable page) {
+        return userESRepository.findByCompanyNameLike(companyName, page).getContent();
     }
 }
