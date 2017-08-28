@@ -2,7 +2,6 @@ package rs.ac.bg.fon.silab.dms.rest.services.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import rs.ac.bg.fon.silab.dms.core.service.CompanyService;
 import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.security.CustomAuthenticationProvider;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;

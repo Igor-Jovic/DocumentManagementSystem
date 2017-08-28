@@ -13,7 +13,7 @@ import rs.ac.bg.fon.silab.dms.security.AuthenticationData;
 public class AuthenticationMapper {
 
     public static User registrationRequestToUser(RegistrationRequest registrationRequest) throws DMSErrorException {
-        return new User(registrationRequest.username, registrationRequest.password, Role.ADMIN, new Company(registrationRequest.companyName));
+        return new User(registrationRequest.username, registrationRequest.password, Role.ADMIN, new Company(registrationRequest.companyName, registrationRequest.companyDescription));
     }
 
     public static RegistrationResponse userToRegistrationResponse(User user) {
