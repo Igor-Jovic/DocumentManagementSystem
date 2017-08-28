@@ -14,6 +14,9 @@ import rs.ac.bg.fon.silab.dms.core.repository.DocumentDescriptorAssociationRepos
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import rs.ac.bg.fon.silab.dms.core.model.DocumentES;
+import rs.ac.bg.fon.silab.dms.core.repository.es.DocumentESRepository;
 
 @Service
 public class DocumentService {
@@ -24,13 +27,19 @@ public class DocumentService {
     @Autowired
     private DocumentDescriptorAssociationRepository descriptorAssociationRepository;
 
-    DocumentService(DocumentRepository documentRepository, DocumentDescriptorAssociationRepository descriptorAssociationRepository) {
+    @Autowired
+    private DocumentESRepository documentESRepository;
+
+    DocumentService(DocumentRepository documentRepository, DocumentDescriptorAssociationRepository descriptorAssociationRepository, DocumentESRepository documentESRepository) {
         this.documentRepository = documentRepository;
         this.descriptorAssociationRepository = descriptorAssociationRepository;
+        this.documentESRepository = documentESRepository;
     }
 
     public Document createDocument(Document document) {
-        return documentRepository.saveAndFlush(document);
+        document = documentRepository.saveAndFlush(document);
+        documentESRepository.save(new DocumentES(document));
+        return document;
     }
 
     public void addDescriptors(List<DocumentDescriptorAssociation> associations) {
@@ -58,6 +67,10 @@ public class DocumentService {
             throw new DMSErrorException("Document does not exists.");
         }
         return document;
+    }
+
+    public List<DocumentES> getAll() {
+        return documentRepository.findAll().stream().map(e -> new DocumentES(e)).collect(Collectors.toList());
     }
 
 }

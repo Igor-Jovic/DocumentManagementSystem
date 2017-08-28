@@ -8,12 +8,15 @@ package rs.ac.bg.fon.silab.dms.core.service;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import org.mockito.Matchers;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Document;
+import rs.ac.bg.fon.silab.dms.core.model.DocumentES;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentRepository;
+import rs.ac.bg.fon.silab.dms.core.repository.es.DocumentESRepository;
 
 public class DocumentServiceTest {
 
@@ -24,7 +27,7 @@ public class DocumentServiceTest {
 
         when(documentRepositoryMock.findOne(documentId)).thenReturn(null);
 
-        DocumentService testee = new DocumentService(documentRepositoryMock, null);
+        DocumentService testee = new DocumentService(documentRepositoryMock, null, null);
         testee.getDocument(documentId);
     }
 
@@ -36,7 +39,7 @@ public class DocumentServiceTest {
         Document document = new Document();
         when(documentRepositoryMock.findOne(documentId)).thenReturn(document);
 
-        DocumentService testee = new DocumentService(documentRepositoryMock, null);
+        DocumentService testee = new DocumentService(documentRepositoryMock, null, null);
 
         Document returnedDoc = testee.getDocument(documentId);
 
@@ -47,9 +50,12 @@ public class DocumentServiceTest {
     public void createDocument_returnsIt() {
         Document document = new Document();
         DocumentRepository documentRepositoryMock = mock(DocumentRepository.class);
+        DocumentESRepository documentESRepositoryMock = mock(DocumentESRepository.class);
+        
         when(documentRepositoryMock.saveAndFlush(document)).thenReturn(document);
+        when(documentESRepositoryMock.save(Matchers.any(DocumentES.class))).thenReturn(new DocumentES(document));
 
-        DocumentService testee = new DocumentService(documentRepositoryMock, null);
+        DocumentService testee = new DocumentService(documentRepositoryMock, null, documentESRepositoryMock);
         Document createdDocument = testee.createDocument(document);
 
         assertEquals(document, createdDocument);

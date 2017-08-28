@@ -14,7 +14,6 @@ import rs.ac.bg.fon.silab.dms.core.model.Descriptor;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentType;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
-import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto.DocumentTypeRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.documenttype.dto.DocumentTypeResponse;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;

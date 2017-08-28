@@ -15,11 +15,15 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import rs.ac.bg.fon.silab.dms.core.model.CompanyES;
+import rs.ac.bg.fon.silab.dms.core.model.DocumentES;
 import rs.ac.bg.fon.silab.dms.core.model.UserES;
 import rs.ac.bg.fon.silab.dms.core.repository.CompanyRepository;
+import rs.ac.bg.fon.silab.dms.core.repository.DocumentRepository;
 import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
 import rs.ac.bg.fon.silab.dms.core.repository.es.CompanyESRepository;
+import rs.ac.bg.fon.silab.dms.core.repository.es.DocumentESRepository;
 import rs.ac.bg.fon.silab.dms.core.repository.es.UserESRepository;
+import rs.ac.bg.fon.silab.dms.core.service.DocumentService;
 
 /**
  *
@@ -44,6 +48,15 @@ public class ElasticsearchLoader {
     CompanyESRepository companyESRepository;
 
     @Autowired
+    DocumentRepository documentRepository;
+
+    @Autowired
+    DocumentESRepository documentESRepository;
+
+    @Autowired
+    DocumentService documentService;
+
+    @Autowired
     Environment environment;
 
     @PostConstruct
@@ -57,6 +70,10 @@ public class ElasticsearchLoader {
             operations.putMapping(CompanyES.class);
             List<CompanyES> companies = companyRepository.findAll().stream().map(e -> new CompanyES(e)).collect(Collectors.toList());
             companyESRepository.save(companies);
+
+            operations.putMapping(DocumentES.class);
+            List<DocumentES> documents = documentService.getAll();
+            documentESRepository.save(documents);
         }
     }
 
