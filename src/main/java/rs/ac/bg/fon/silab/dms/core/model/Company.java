@@ -16,6 +16,9 @@ public class Company {
     @Column(name = "NAME", unique = true)
     private String name;
 
+    @Column(name = "DESCRIPTION")
+    private String description;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<CompanyProcess> processes;
 
@@ -30,6 +33,12 @@ public class Company {
 
     public Company(String name) {
         this.name = name;
+        employees = new ArrayList<>();
+    }
+    
+    public Company(String name, String description) {
+        this.name = name;
+        this.description = description;
         employees = new ArrayList<>();
     }
 
@@ -47,6 +56,14 @@ public class Company {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<CompanyProcess> getProcesses() {
