@@ -17,22 +17,17 @@ import rs.ac.bg.fon.silab.dms.core.model.*;
 import rs.ac.bg.fon.silab.dms.core.service.ActivityService;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentService;
 import rs.ac.bg.fon.silab.dms.core.service.DocumentTypeService;
-import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentDescriptorRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentRequest;
 import rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse;
 import rs.ac.bg.fon.silab.dms.security.TokenAuthenticationService;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.FileStore;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.PageRequest;
 
 import static rs.ac.bg.fon.silab.dms.rest.model.ApiResponse.createSuccessResponse;
 import static rs.ac.bg.fon.silab.dms.rest.services.document.dto.DocumentResponse.getDocumentResponseList;
@@ -55,7 +50,7 @@ public class DocumentController {
 
     @Autowired
     private TokenAuthenticationService tokenAuthenticationService;
-
+    
     @PostMapping
     public ResponseEntity create(@RequestHeader("X-Authorization") String token, @RequestBody DocumentRequest documentRequest) throws DMSErrorException {
         User authenticatedUser = tokenAuthenticationService.getAuthenticatedUser(token);
@@ -70,11 +65,13 @@ public class DocumentController {
     }
 
     @GetMapping
-    public ResponseEntity getAll(@RequestHeader("X-Authorization") String token) {
+    public ResponseEntity getAll(@RequestHeader("X-Authorization") String token,
+            @RequestParam(name = "search_expression", required = false, defaultValue = "") String searchExpression,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size) {
         User authenticatedUser = tokenAuthenticationService.getAuthenticatedUser(token);
-        List<Document> documents = documentService.getAllDocumentsByCompanyId(authenticatedUser.getCompany().getId());
-        List<DocumentResponse> documentResponses = getDocumentResponseList(documents);
-        return ResponseEntity.ok(createSuccessResponse(documentResponses));
+        List<DocumentES> documents = documentService.getAllFor(authenticatedUser.getCompany().getId(), searchExpression, new PageRequest(page, size));
+        return ResponseEntity.ok(createSuccessResponse(documents));
     }
 
     @GetMapping(value = "/activities/{activityId}")

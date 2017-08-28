@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentES;
 import rs.ac.bg.fon.silab.dms.core.repository.es.DocumentESRepository;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class DocumentService {
@@ -71,6 +72,10 @@ public class DocumentService {
 
     public List<DocumentES> getAll() {
         return documentRepository.findAll().stream().map(e -> new DocumentES(e)).collect(Collectors.toList());
+    }
+
+    public List<DocumentES> getAllFor(Long companyId, String searchExpression, Pageable page) {
+        return documentESRepository.findBy(companyId, searchExpression, page).getContent();
     }
 
 }
