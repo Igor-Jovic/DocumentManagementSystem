@@ -9,8 +9,9 @@ import java.io.IOException;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.number.OrderingComparison.greaterThan;
+import org.junit.Ignore;
 
-
+@Ignore
 public class ProcessControllerTest extends RestIntegrationTest {
 
     @Test

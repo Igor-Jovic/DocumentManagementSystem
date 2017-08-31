@@ -8,7 +8,8 @@ package rs.ac.bg.fon.silab.dms.core.service;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import org.mockito.Matchers;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -16,7 +17,6 @@ import rs.ac.bg.fon.silab.dms.core.exception.DMSErrorException;
 import rs.ac.bg.fon.silab.dms.core.model.Document;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentES;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentRepository;
-import rs.ac.bg.fon.silab.dms.core.repository.es.DocumentESRepository;
 
 public class DocumentServiceTest {
 
@@ -50,12 +50,12 @@ public class DocumentServiceTest {
     public void createDocument_returnsIt() {
         Document document = new Document();
         DocumentRepository documentRepositoryMock = mock(DocumentRepository.class);
-        DocumentESRepository documentESRepositoryMock = mock(DocumentESRepository.class);
-        
-        when(documentRepositoryMock.saveAndFlush(document)).thenReturn(document);
-        when(documentESRepositoryMock.save(Matchers.any(DocumentES.class))).thenReturn(new DocumentES(document));
+        ElasticsearchClient elasticsearchClient = mock(ElasticsearchClient.class);
 
-        DocumentService testee = new DocumentService(documentRepositoryMock, null, documentESRepositoryMock);
+        when(documentRepositoryMock.saveAndFlush(document)).thenReturn(document);
+        doNothing().when(elasticsearchClient).save(any(DocumentES.class));
+        
+        DocumentService testee = new DocumentService(documentRepositoryMock, null, elasticsearchClient);
         Document createdDocument = testee.createDocument(document);
 
         assertEquals(document, createdDocument);

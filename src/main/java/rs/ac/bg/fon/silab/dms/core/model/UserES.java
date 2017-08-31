@@ -5,17 +5,12 @@
  */
 package rs.ac.bg.fon.silab.dms.core.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-
 /**
  *
  * @author stefan
  */
-@Document(indexName = "dms", type = "user")
 public class UserES {
 
-    @Id
     private Long id;
     private String username;
     private String companyName;

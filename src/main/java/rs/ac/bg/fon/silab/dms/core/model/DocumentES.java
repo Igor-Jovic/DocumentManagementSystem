@@ -8,19 +8,12 @@ package rs.ac.bg.fon.silab.dms.core.model;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "dms", type = "document")
 public class DocumentES {
 
     private String description;
-    @Id
     private Long id;
     private String name;
     private Long documentTypeId;
-    @Field(type = FieldType.Nested)
     private List<DocumentDescriptorES> documentDescriptors;
     private String downloadLink;
     private Long companyId;

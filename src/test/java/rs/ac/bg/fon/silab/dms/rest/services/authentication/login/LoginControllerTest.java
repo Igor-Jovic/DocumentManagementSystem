@@ -8,7 +8,9 @@ import rs.ac.bg.fon.silab.dms.rest.services.authentication.login.dto.LoginReques
 import java.io.IOException;
 
 import static org.hamcrest.core.IsEqual.equalTo;
+import org.junit.Ignore;
 
+@Ignore
 public class LoginControllerTest extends RestIntegrationTest {
 
     @Test

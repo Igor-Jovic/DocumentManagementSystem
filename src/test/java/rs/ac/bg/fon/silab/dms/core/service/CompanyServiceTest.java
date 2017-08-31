@@ -7,10 +7,10 @@ import rs.ac.bg.fon.silab.dms.core.repository.CompanyRepository;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import rs.ac.bg.fon.silab.dms.core.model.CompanyES;
-import rs.ac.bg.fon.silab.dms.core.repository.es.CompanyESRepository;
 
 public class CompanyServiceTest {
 
@@ -30,13 +30,13 @@ public class CompanyServiceTest {
     public void createCompany_companyDoesntExists_createsCompany() throws DMSErrorException {
         Company company = new Company("Company");
         CompanyRepository companyRepositoryMock = mock(CompanyRepository.class);
-        CompanyESRepository companyESRepositoryMock = mock(CompanyESRepository.class);
+        ElasticsearchClient elasticsearchClient = mock(ElasticsearchClient.class);
 
         when(companyRepositoryMock.findByName(any())).thenReturn(null);
         when(companyRepositoryMock.saveAndFlush(any())).thenReturn(company);
-        when(companyESRepositoryMock.save(any(CompanyES.class))).thenReturn(new CompanyES(company));
+        doNothing().when(elasticsearchClient).save(any(CompanyES.class));
 
-        CompanyService testee = new CompanyService(companyRepositoryMock, companyESRepositoryMock);
+        CompanyService testee = new CompanyService(companyRepositoryMock, elasticsearchClient);
 
         Company newCompany = testee.createCompany(company);
 

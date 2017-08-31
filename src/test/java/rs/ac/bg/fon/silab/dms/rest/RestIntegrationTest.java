@@ -21,10 +21,12 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.jayway.restassured.RestAssured.given;
+import org.junit.Ignore;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = DocumentManagementSystemApp.class)
+@Ignore
 public abstract class RestIntegrationTest {
 
     private static final String MOCK_DATA_ROOT = "mockdata";

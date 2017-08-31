@@ -12,11 +12,9 @@ import rs.ac.bg.fon.silab.dms.core.model.Document;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentDescriptorAssociation;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentDescriptorAssociationRepository;
 import rs.ac.bg.fon.silab.dms.core.repository.DocumentRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import rs.ac.bg.fon.silab.dms.core.model.DocumentES;
-import rs.ac.bg.fon.silab.dms.core.repository.es.DocumentESRepository;
 import org.springframework.data.domain.Pageable;
 
 @Service
@@ -29,17 +27,18 @@ public class DocumentService {
     private DocumentDescriptorAssociationRepository descriptorAssociationRepository;
 
     @Autowired
-    private DocumentESRepository documentESRepository;
+    private ElasticsearchClient elasticsearchClient;
 
-    DocumentService(DocumentRepository documentRepository, DocumentDescriptorAssociationRepository descriptorAssociationRepository, DocumentESRepository documentESRepository) {
+    DocumentService(DocumentRepository documentRepository, DocumentDescriptorAssociationRepository descriptorAssociationRepository,
+            ElasticsearchClient elasticsearchClient) {
         this.documentRepository = documentRepository;
         this.descriptorAssociationRepository = descriptorAssociationRepository;
-        this.documentESRepository = documentESRepository;
+        this.elasticsearchClient = elasticsearchClient;
     }
 
     public Document createDocument(Document document) {
         document = documentRepository.saveAndFlush(document);
-        documentESRepository.save(new DocumentES(document));
+        elasticsearchClient.save(new DocumentES(document));
         return document;
     }
 
@@ -75,7 +74,7 @@ public class DocumentService {
     }
 
     public List<DocumentES> getAllFor(Long companyId, String searchExpression, Pageable page) {
-        return documentESRepository.findBy(companyId, searchExpression, page).getContent();
+        return elasticsearchClient.findDocumentsBy(companyId, searchExpression, page);
     }
 
 }

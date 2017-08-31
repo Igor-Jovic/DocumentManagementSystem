@@ -8,7 +8,9 @@ import java.io.IOException;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
+import org.junit.Ignore;
 
+@Ignore
 public class RegistrationControllerTest extends RestIntegrationTest {
 
     private static final String MOCK_ROOT_PATH = "/authentication";

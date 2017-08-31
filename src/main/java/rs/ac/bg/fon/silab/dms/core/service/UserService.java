@@ -12,7 +12,6 @@ import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
 
 import static org.springframework.util.StringUtils.isEmpty;
 import rs.ac.bg.fon.silab.dms.core.model.UserES;
-import rs.ac.bg.fon.silab.dms.core.repository.es.UserESRepository;
 
 @Service
 public class UserService {
@@ -27,13 +26,14 @@ public class UserService {
     private BCryptPasswordEncoder encoder;
 
     @Autowired
-    private UserESRepository userESRepository;
+    private ElasticsearchClient elasticsearchClient;
 
-    UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, CompanyService companyService, UserESRepository userESRepository) {
+    UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, CompanyService companyService,
+            ElasticsearchClient elasticsearchClient) {
         this.encoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.companyService = companyService;
-        this.userESRepository = userESRepository;
+        this.elasticsearchClient = elasticsearchClient;
     }
 
     @Transactional
@@ -49,7 +49,7 @@ public class UserService {
         validateUser(user);
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.saveAndFlush(user);
-        userESRepository.save(new UserES(user));
+        elasticsearchClient.save(new UserES(user));
         return user;
     }
 
@@ -67,10 +67,7 @@ public class UserService {
     }
 
     public List<UserES> getByUsernameLike(String username, Pageable page) {
-        return userESRepository.findByUsernameLike(username, page).getContent();
+        return elasticsearchClient.findUsersByNameLike(username, page);
     }
 
-    public List<UserES> getByCompanyNameLike(String companyName, Pageable page) {
-        return userESRepository.findByCompanyNameLike(companyName, page).getContent();
-    }
 }

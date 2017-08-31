@@ -12,8 +12,9 @@ import rs.ac.bg.fon.silab.dms.core.service.UserService;
 import rs.ac.bg.fon.silab.dms.security.exception.UnknownUserException;
 
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
 import static org.mockito.Mockito.*;
-
+@Ignore
 public class CustomAuthenticationProviderTest {
 
     @Test(expected = UnknownUserException.class)

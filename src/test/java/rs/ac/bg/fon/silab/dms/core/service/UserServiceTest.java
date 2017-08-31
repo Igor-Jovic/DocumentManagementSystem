@@ -7,10 +7,8 @@ import rs.ac.bg.fon.silab.dms.core.model.Company;
 import rs.ac.bg.fon.silab.dms.core.model.Role;
 import rs.ac.bg.fon.silab.dms.core.model.User;
 import rs.ac.bg.fon.silab.dms.core.repository.UserRepository;
-
 import static org.mockito.Mockito.*;
 import rs.ac.bg.fon.silab.dms.core.model.UserES;
-import rs.ac.bg.fon.silab.dms.core.repository.es.UserESRepository;
 
 public class UserServiceTest {
 
@@ -83,14 +81,14 @@ public class UserServiceTest {
         UserRepository userRepositoryMock = mock(UserRepository.class);
         CompanyService companyServiceMock = mock(CompanyService.class);
         BCryptPasswordEncoder encoderMock = mock(BCryptPasswordEncoder.class);
-        UserESRepository userESRepositoryMock = mock(UserESRepository.class);
+        ElasticsearchClient elasticsearchClient = mock(ElasticsearchClient.class);
 
         when(userRepositoryMock.findByUsername("user")).thenReturn(null);
         when(companyServiceMock.createCompany(adminCompany)).thenReturn(adminCompany);
         when(encoderMock.encode("admin")).thenReturn("adminPassEncoded");
-        when(userESRepositoryMock.save(any(UserES.class))).thenReturn(new UserES(user));
+        doNothing().when(elasticsearchClient).save(any(UserES.class));
 
-        UserService testee = new UserService(userRepositoryMock, encoderMock, companyServiceMock, userESRepositoryMock);
+        UserService testee = new UserService(userRepositoryMock, encoderMock, companyServiceMock, elasticsearchClient);
         testee.createUser(user);
 
         verify(userRepositoryMock, times(1)).saveAndFlush(user);
